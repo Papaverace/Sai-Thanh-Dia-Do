@@ -270,6 +270,7 @@ footer .bottom{margin-top:36px;padding-top:16px;border-top:1px solid rgba(255,24
   color:var(--paper-ink);font-family:var(--f-hand);font-size:21px;line-height:1.5;padding:28px 30px 30px;max-width:520px;margin:36px 0 40px 6%;transform:rotate(-1.6deg);box-shadow:0 14px 30px rgba(0,0,0,.18)}
 .paper h4{margin:0 0 8px;font-family:var(--f-hand);font-size:26px;font-weight:400;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
 
+.lede-sm{font-size:19px;line-height:1.7;max-width:64ch;margin-bottom:24px!important}
 .values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;max-width:820px;border-top:2px solid var(--fg)}
 .values div{padding:18px 20px 20px 0;border-bottom:1px solid var(--line)}
 .values div:nth-child(odd){padding-right:28px;border-right:1px solid var(--line)}
@@ -391,75 +392,63 @@ footer .bottom{margin-top:36px;padding-top:16px;border-top:1px solid rgba(255,24
    ====================================================================== */
 const IMG = {
   /* khóa: [đường dẫn, chú thích, vị trí cắt ảnh] */
-  "dinh-kham-sai-cover":["img/dinh-kham-sai-bao-tang.jpg","Bảo tàng TP. Hồ Chí Minh, Dinh Khâm Sai xưa","center 40%"],
-  "dinh-kham-sai-wide":["img/dinh-kham-sai-xua.jpg","Tòa nhà thời Pháp thuộc, nay là Bảo tàng TP. Hồ Chí Minh","center 55%"],
-  "dinh-kham-sai-ev1":["img/thang-tam-1945.jpg","Quần chúng Sài Gòn trong những ngày Tháng Tám 1945","center"],
+  "dinh-kham-sai-cover":["img/dinh-kham-sai-xua.jpg", "Dinh Khâm Sai thời Pháp thuộc", "center 55%"],
+  "dinh-kham-sai-wide":["img/dinh-kham-sai-bao-tang.jpg", "Bảo tàng TP. Hồ Chí Minh, Dinh Khâm Sai xưa", "center 60%"],
   "dinh-kham-sai-now":["img/bao-tang-trung-bay.jpg","Không gian trưng bày trong bảo tàng hôm nay","center"],
-  "dinh-kham-sai-p0":["img/nguyen-van-sam-sach.jpg","Sách của Nguyễn Văn Sâm","center"],
-  "dinh-kham-sai-p1":["img/pham-ngoc-thach.jpg","Phạm Ngọc Thạch","center 20%"],
-  "dinh-kham-sai-p2":["img/tran-van-giau.jpg","Trần Văn Giàu","40% 20%"],
+  "dinh-kham-sai-p0":["img/nguyen-van-sam.jpg", "Nguyễn Văn Sâm", "center 25%"],
+  "dinh-kham-sai-p1":["img/tran-van-giau.jpg", "Trần Văn Giàu", "center 25%"],
+  "dinh-kham-sai-p2":["img/pham-ngoc-thach.jpg", "Phạm Ngọc Thạch", "center 25%"],
   "dinh-kham-sai-starbg":["img/thang-tam-1945.jpg","Quần chúng Sài Gòn tháng 8/1945","center"],
-  "dinh-kham-sai-p3":["img/dinh-kham-sai-xua.jpg","Công trình do Foulhoux thiết kế","center"],
 
   "nga-ba-giong-cover":["img/nga-ba-giong-toan-canh.jpg","Toàn cảnh Khu tưởng niệm Ngã Ba Giồng","center 55%"],
-  "nga-ba-giong-ev0":["img/nam-ky-khoi-nghia.jpg","Tư liệu về cuộc Khởi nghĩa Nam Kỳ 1940","center"],
-  "nga-ba-giong-ev2":["img/nga-ba-giong-dang-huong.jpg","Dâng hương tại bia Nam Kỳ khởi nghĩa","center"],
+  "nga-ba-giong-ev0":["img/nam-ky-khoi-nghia.jpg", "Tư liệu về cuộc Khởi nghĩa Nam Kỳ 1940", "center"],
   "nga-ba-giong-starbg":["img/nam-ky-khoi-nghia.jpg","Tư liệu Khởi nghĩa Nam Kỳ 1940","center"],
   "nga-ba-giong-now":["img/nga-ba-giong-cong.jpg","Cổng Khu tưởng niệm Liệt sĩ Ngã Ba Giồng","center"],
 
-  "com-tam-dai-han-cover":["img/com-tam-noi-that.jpg","Hiện vật trưng bày trong quán","center 45%"],
-  "com-tam-dai-han-wide":["img/com-tam-mat-tien.jpg","Mặt tiền 113A Đặng Dung với bảng hiệu cũ","center 30%"],
-  "com-tam-dai-han-ev1":["img/biet-dong-ban-do.jpg","Chiến sĩ Biệt động nghiên cứu sơ đồ trước trận đánh","center"],
+  "com-tam-dai-han-cover":["img/com-tam-mat-tien.jpg", "Mặt tiền 113A Đặng Dung với bảng hiệu “từ năm 1946”", "center 30%"],
   "com-tam-dai-han-starbg":["img/biet-dong-ban-do.jpg","Chiến sĩ Biệt động nghiên cứu sơ đồ","center"],
-  "com-tam-dai-han-now":["img/com-tam-mat-tien.jpg","Quán Đỗ Phủ – Đại Hàn hôm nay","center"],
+  "com-tam-dai-han-now":["img/com-tam-noi-that.jpg", "Hiện vật trưng bày trong quán hôm nay", "center"],
 
   "dia-dao-phu-tho-hoa-cover":["img/dia-dao-ham.jpg","Đường hầm địa đạo Phú Thọ Hòa","center 60%"],
   "dia-dao-phu-tho-hoa-wide":["img/dia-dao-trong-ham.jpg","Bên trong lòng địa đạo, cao chừng một mét","center 45%"],
-  "dia-dao-phu-tho-hoa-ev0":["img/dia-dao-mieng-ham.jpg","Miệng hầm vuông dẫn xuống địa đạo","center"],
-  "dia-dao-phu-tho-hoa-ev1":["img/sai-gon-1968-tren-khong.jpg","Ảnh chụp Sài Gòn từ trên không (tư liệu 1968)","center"],
-  "dia-dao-phu-tho-hoa-ev2":["img/may-bay-thoi-phap.jpg","Máy bay và sân bay thời Pháp thuộc","center"],
   "dia-dao-phu-tho-hoa-starbg":["img/dia-dao-trong-ham.jpg","Lòng địa đạo","center"],
   "dia-dao-phu-tho-hoa-now":["img/dia-dao-cong.jpg","Cổng khu di tích Địa đạo Phú Thọ Hòa","center"],
   "dia-dao-phu-tho-hoa-g0":["img/dia-dao-bo-ham.jpg","Lối đi hẹp phải cúi người","center"],
   "dia-dao-phu-tho-hoa-g1":["img/dia-dao-duong-ham.jpg","Đường hầm có đèn dọc lối","center"],
-  "dia-dao-phu-tho-hoa-g2":["img/dia-dao-choi-tranh.jpg","Chòi tranh che lối xuống hầm","center 70%"]
+  "dia-dao-phu-tho-hoa-g2":["img/dia-dao-choi-tranh.jpg","Chòi tranh che lối xuống hầm","center 70%"],
+  "dinh-kham-sai-ev1":["img/thang-tam-1945.jpg", "Quần chúng Sài Gòn trong những ngày Tháng Tám 1945", "center"],
+  "dinh-kham-sai-ev3":["img/dinh-kham-sai-xua.jpg", "Tòa nhà thời Pháp thuộc", "center"],
+  "dinh-kham-sai-p3":["img/le-van-hoach.jpg", "Lê Văn Hoạch", "center 25%"],
+  "dinh-kham-sai-p4":["img/tran-van-huu.jpg", "Trần Văn Hữu", "center 25%"],
+  "dinh-kham-sai-p5":["img/ngo-dinh-diem.jpg", "Ngô Đình Diệm", "center 25%"],
+  "nga-ba-giong-p0":["img/nguyen-van-cu.jpg", "Nguyễn Văn Cừ", "center 25%"],
+  "nga-ba-giong-p1":["img/duong-van-duong.jpg", "Dương Văn Dương", "center 25%"],
+  "nga-ba-giong-p2":["img/tran-van-giau-2.jpg", "Trần Văn Giàu", "center 25%"],
+  "nga-ba-giong-ev4":["img/nga-ba-giong-dang-huong.jpg", "Dâng hương tại bia Nam Kỳ khởi nghĩa", "center"],
+  "com-tam-dai-han-ev3":["img/biet-dong-ban-do.jpg", "Chiến sĩ Biệt động nghiên cứu sơ đồ trước trận đánh", "center"],
+  "dia-dao-phu-tho-hoa-ev1":["img/dia-dao-mieng-ham.jpg", "Miệng hầm vuông dẫn xuống địa đạo", "center"],
+  "dia-dao-phu-tho-hoa-ev3":["img/may-bay-thoi-phap.jpg", "Máy bay và sân bay thời Pháp thuộc", "center"]
 };
 
 const SITES = [
 {
-  id:"dinh-kham-sai", star:1, starText:"", name:"Dinh Khâm Sai", sub:"Bảo tàng TP. Hồ Chí Minh ngày nay",
+  id:"dinh-kham-sai", star:2, starText:"", name:"Dinh Khâm Sai", sub:"Bảo tàng TP. Hồ Chí Minh ngày nay",
   year:1885, yearLabel:"1885–1890", period:"Cách mạng Tháng Tám", area:"Trung tâm", type:"Công trình kiến trúc",
   rank:"Di tích kiến trúc nghệ thuật quốc gia (2012)",
   addr:"65 Lý Tự Trọng, phường Sài Gòn (Quận 1 cũ)", hours:"Xem giờ mở cửa và giá vé trên kênh chính thức của bảo tàng trước khi đến.",
   lat:10.7761, lng:106.6997,
   summary:"Tòa nhà kiến trúc Pháp cuối thế kỷ XIX, nơi lực lượng cách mạng chiếm giữ trong đêm 24/8/1945 và kéo lá cờ đỏ sao vàng giữa trung tâm Sài Gòn.",
   story:"Đêm 24/8/1945, các thanh niên của Tráng đoàn Lê Lai tiến vào tòa dinh thự lớn nhất trung tâm Sài Gòn. Họ bắt giữ Khâm sai đại thần Nguyễn Văn Sâm, hạ lá cờ quẻ ly và kéo lên lá cờ đỏ sao vàng. Sáng hôm sau, hàng trăm nghìn người đổ về trung tâm thành phố, và cuộc Tổng khởi nghĩa ở Sài Gòn giành thắng lợi.",
-  context:["Tòa nhà được khởi công năm 1885 và hoàn thành năm 1890 theo thiết kế của kiến trúc sư người Pháp Alfred Foulhoux. Ban đầu công trình được dự định làm bảo tàng thương mại, sau đó trở thành dinh thự của Thống đốc Nam Kỳ.",
-           "Sau khi Nhật đảo chính Pháp ngày 9/3/1945, tòa nhà lần lượt được Thống đốc Nhật sử dụng, rồi giao cho chính quyền Trần Trọng Kim. Từ đây nó mang tên Dinh Khâm Sai, nơi làm việc của Khâm sai đại thần Nam Bộ Nguyễn Văn Sâm."],
-  timeline:[["1885","Khởi công","Công trình bắt đầu xây theo thiết kế của Alfred Foulhoux."],
-            ["1890","Hoàn thành","Dự định làm bảo tàng thương mại, sau dùng làm dinh Thống đốc Nam Kỳ."],
-            ["9/3/1945","Nhật đảo chính Pháp","Tòa nhà chuyển qua tay Thống đốc Nhật, rồi chính quyền Trần Trọng Kim."],
-            ["24/8/1945","Chiếm Dinh Khâm Sai","Thanh niên Tiền phong bắt giữ Nguyễn Văn Sâm, kéo cờ đỏ sao vàng."],
-            ["25/8/1945","Tổng khởi nghĩa","Sài Gòn – Chợ Lớn – Gia Định giành chính quyền."],
-            ["2012","Di tích quốc gia","Được xếp hạng Di tích kiến trúc nghệ thuật cấp quốc gia."]],
-  events:[
-    {when:"Đêm 24/8/1945",title:"Chiếm Dinh Khâm Sai",text:"Tráng đoàn Lê Lai thuộc lực lượng Thanh niên Tiền phong tiến vào dinh, bắt giữ Nguyễn Văn Sâm và kéo cờ đỏ sao vàng. Đây là một dấu mốc trong quá trình lực lượng cách mạng giành quyền kiểm soát các cơ quan chính quyền ở Sài Gòn.",img:"Tư liệu về đêm 24/8/1945 tại Dinh Khâm Sai"},
-    {when:"25/8/1945",title:"Tổng khởi nghĩa giành chính quyền",text:"Hàng vạn, rồi hàng trăm nghìn người dân từ Sài Gòn – Chợ Lớn – Gia Định và các tỉnh lân cận tập trung về trung tâm thành phố. Cuộc khởi nghĩa thắng lợi, mở ra một giai đoạn mới trong lịch sử Sài Gòn.",img:"Ảnh quần chúng mít tinh tháng 8/1945"},
-    {when:"Sau khởi nghĩa",title:"Trụ sở chính quyền cách mạng",text:"Dinh Khâm Sai trở thành trụ sở Ủy ban Hành chính lâm thời Nam Bộ, đánh dấu sự chuyển giao quyền kiểm soát một cơ quan hành chính quan trọng bậc nhất của Sài Gòn.",img:""}],
-  quote:"Chỉ trong một đêm, lá cờ trên nóc tòa dinh thự giữa Sài Gòn đã đổi màu.",
-  note:{title:"Ghi chép · tháng 8/1945",text:"Đêm 24: Tráng đoàn Lê Lai vào dinh. Bắt Khâm sai Nguyễn Văn Sâm. Hạ cờ quẻ ly – kéo cờ đỏ sao vàng. Sáng 25: dân Sài Gòn – Chợ Lớn – Gia Định đổ về trung tâm."},
+  context:["Tòa nhà được khởi công năm 1885 và hoàn thành năm 1890 theo thiết kế của kiến trúc sư người Pháp Alfred Foulhoux. Ban đầu công trình được dự định làm nơi trưng bày sản vật, sau đó trở thành dinh thự của Thống đốc Nam Kỳ.", "Tháng 3/1945, sau khi Nhật đảo chính Pháp, Thống đốc Nhật Yoshio Minoda dùng tòa nhà làm dinh thự. Ngày 14/8/1945, Nhật bàn giao tòa nhà cho chính quyền Trần Trọng Kim; từ đây nó là Dinh Khâm sai Nam Bộ, nơi làm việc của Khâm sai Đại thần Nguyễn Văn Sâm."],
+  timeline:[["3/1945", "Dinh thự Thống đốc Nhật", "Sau khi Nhật đảo chính Pháp, Yoshio Minoda dùng tòa nhà làm dinh thự."], ["14/8/1945", "Dinh Khâm sai Nam Bộ", "Nhật bàn giao cho chính quyền Trần Trọng Kim; Nguyễn Văn Sâm làm việc tại đây."], ["24/8/1945", "Chiếm Dinh Khâm sai", "Khoảng 22 giờ, Tráng đoàn Lê Lai bắt Nguyễn Văn Sâm, kéo cờ đỏ sao vàng."], ["25/8/1945", "Trụ sở Lâm ủy Nam Bộ", "Ủy ban Hành chính lâm thời Nam Bộ, sau là Ủy ban Nhân dân Nam Bộ."], ["9/1945", "Quân Anh chiếm", "Ủy ban Nhân dân Nam Bộ phải chuyển sang địa điểm khác."], ["23/5/1947", "Nam Kỳ tự trị", "Pháp giao tòa nhà cho Lê Văn Hoạch làm trụ sở chính quyền Nam Kỳ tự trị."], ["6/1948", "Dinh Tổng trấn, Thủ hiến", "Trần Văn Hữu tiếp quản tòa nhà."], ["1954", "Dinh Quốc khách", "Sau Hiệp định Genève, Ngô Đình Diệm dùng làm Dinh Quốc khách."]],
+  events:[{"when": "Đêm 24/8/1945, khoảng 22 giờ", "title": "Chiếm Dinh Khâm sai", "text": "Tráng đoàn Lê Lai thuộc lực lượng Thanh niên Tiền phong tiến vào chiếm Dinh Khâm sai, bắt giữ Nguyễn Văn Sâm, hạ cờ quẻ ly và kéo cờ đỏ sao vàng. Đây là dấu mốc quan trọng của cuộc Tổng khởi nghĩa giành chính quyền ở Sài Gòn – Gia Định.", "img": ""}, {"when": "25/8/1945", "title": "Trụ sở chính quyền cách mạng", "text": "Sau khi giành được chính quyền, Dinh Khâm sai trở thành trụ sở Ủy ban Hành chính lâm thời Nam Bộ (Lâm ủy Nam Bộ), sau đó là trụ sở Ủy ban Nhân dân Nam Bộ.", "img": ""}, {"when": "Tháng 9/1945", "title": "Quân Anh chiếm tòa nhà", "text": "Quân đội Anh chiếm tòa nhà, buộc Ủy ban Nhân dân Nam Bộ phải chuyển sang địa điểm khác. Chỉ ít tuần sau ngày khởi nghĩa, Sài Gòn lại bước vào chiến tranh.", "img": ""}, {"when": "1947–1954", "title": "Đổi chủ theo thời cuộc", "text": "Ngày 23/5/1947, thực dân Pháp giao tòa nhà cho Lê Văn Hoạch làm trụ sở chính quyền Nam Kỳ tự trị. Từ tháng 6/1948, nơi đây là dinh Tổng trấn, rồi dinh Thủ hiến của Trần Văn Hữu. Năm 1954, sau Hiệp định Genève, Ngô Đình Diệm dùng tòa nhà làm Dinh Quốc khách.", "img": ""}],
+  quote:"Từ 1945 đến 1954, tòa dinh thự giữa Sài Gòn liên tục đổi chủ theo từng biến động của thời cuộc.",
+  note:{"title": "Ghi chép · tháng 8/1945", "text": "Đêm 24, khoảng 22 giờ: Tráng đoàn Lê Lai vào dinh. Bắt Khâm sai Nguyễn Văn Sâm. Hạ cờ quẻ ly, kéo cờ đỏ sao vàng. Ngày 25: Lâm ủy Nam Bộ đặt trụ sở tại đây."},
   values:[["Lịch sử","Gắn với sự kiện giành chính quyền tại Sài Gòn trong Cách mạng Tháng Tám năm 1945."],["Kiến trúc","Công trình kiến trúc Pháp cuối thế kỷ XIX, được công nhận là Di tích kiến trúc nghệ thuật cấp quốc gia."],["Văn hóa","Bảo tàng lưu giữ nhiều tư liệu, hiện vật về lịch sử, văn hóa và quá trình phát triển của thành phố."],["Giáo dục","Giúp thế hệ trẻ hiểu về Cách mạng Tháng Tám, sự chuyển giao chính quyền và lịch sử đô thị Sài Gòn."]],
   legacy:["Ngày nay tòa nhà là Bảo tàng Thành phố Hồ Chí Minh, giới thiệu lịch sử hình thành, phát triển, văn hóa và đời sống của Sài Gòn – TP.HCM. Năm 2012, công trình được xếp hạng Di tích kiến trúc nghệ thuật cấp quốc gia."],
-  people:[["Nguyễn Văn Sâm","Khâm sai đại thần Nam Bộ","Làm việc tại Dinh Khâm Sai trong thời gian ngắn dưới chính quyền Trần Trọng Kim; bị lực lượng khởi nghĩa bắt giữ đêm 24/8/1945.",""],
-          ["Phạm Ngọc Thạch","Thủ lĩnh Thanh niên Tiền phong","Bác sĩ, nhà cách mạng. Thanh niên Tiền phong do ông đứng đầu là lực lượng tham gia chiếm giữ Dinh Khâm Sai và tập hợp quần chúng Sài Gòn năm 1945.",""],
-          ["Trần Văn Giàu","Lãnh đạo phong trào giành chính quyền ở Nam Bộ","Tham gia chỉ đạo quá trình chuẩn bị và tổ chức khởi nghĩa tại Sài Gòn – Gia Định trong Cách mạng Tháng Tám.",""],
-          ["Alfred Foulhoux","Kiến trúc sư","Người Pháp thiết kế tòa nhà xây từ 1885 đến 1890, một ví dụ tiêu biểu của kiến trúc thời Pháp thuộc ở trung tâm Sài Gòn.",""]],
-  quiz:[["Ai là kiến trúc sư thiết kế tòa nhà?",["Alfred Foulhoux","Gustave Eiffel","Paul Doumer"],0,"Alfred Foulhoux thiết kế công trình, xây từ 1885 đến 1890."],
-        ["Lực lượng cách mạng chiếm Dinh Khâm Sai vào đêm nào?",["2/9/1945","24/8/1945","19/8/1945"],1,"Đêm 24/8/1945, một ngày trước Tổng khởi nghĩa ở Sài Gòn."],
-        ["Lực lượng nào trực tiếp tiến vào chiếm dinh?",["Tiểu đoàn Ký Con","Biệt động Sài Gòn","Tráng đoàn Lê Lai (Thanh niên Tiền phong)"],2,"Tráng đoàn Lê Lai thuộc Thanh niên Tiền phong."]],
-  sources:[["Sở Văn hóa và Thể thao TP.HCM – Cách mạng Tháng Tám năm 1945 tại Sài Gòn – Chợ Lớn – Gia Định","https://svhtt.hochiminhcity.gov.vn/tin-chi-tiet/-/chi-tiet/cach-mang-thang-tam-nam-1945-tai-sai-gon-cho-lon-gia-%C4%91inh-23496-1.html"],
-           ["Hội đồng nhân dân TP.HCM – Theo dấu khởi nghĩa Cách mạng Tháng Tám giữa lòng TP.HCM","https://hdnd.vn/tin-tuc/tin-tong-hop/theo-dau-khoi-nghia-cach-mang-thang-tam-giua-long-tp-hcm"],
-           ["Bảo tàng Thành phố Hồ Chí Minh – Trang thông tin chính thức","https://hcmc-museum.edu.vn/"]],
+  people:[["Nguyễn Văn Sâm", "Khâm sai Đại thần Nam Bộ", "Khâm sai Đại thần Nam Bộ của chính phủ Trần Trọng Kim, làm việc tại Dinh Khâm sai trước Cách mạng tháng Tám. Bị lực lượng Thanh niên Tiền phong bắt giữ khi dinh bị chiếm vào khoảng 22 giờ ngày 24/8/1945.", ""], ["Trần Văn Giàu", "Bí thư Xứ ủy Nam Kỳ", "Lãnh đạo phong trào cách mạng tại Sài Gòn – Chợ Lớn – Gia Định, tham gia chỉ đạo chuẩn bị và tổ chức Tổng khởi nghĩa tháng Tám năm 1945 tại Nam Bộ, có vai trò quan trọng trong việc giành chính quyền tại Sài Gòn.", ""], ["Phạm Ngọc Thạch", "Thủ lĩnh Thanh niên Tiền phong", "Bác sĩ, thủ lĩnh phong trào Thanh niên Tiền phong năm 1945, góp phần tập hợp thanh niên tham gia cách mạng ở Nam Bộ. Thanh niên Tiền phong là lực lượng trực tiếp chiếm Dinh Khâm sai trong đêm 24/8/1945.", ""], ["Lê Văn Hoạch", "Chính quyền Nam Kỳ tự trị", "Được Pháp giao sử dụng Dinh Khâm sai làm trụ sở chính quyền Nam Kỳ tự trị từ ngày 23/5/1947, gắn với giai đoạn thay đổi chức năng của tòa nhà sau năm 1945.", ""], ["Trần Văn Hữu", "Tổng trấn, Thủ hiến Nam Việt", "Tiếp quản tòa nhà từ tháng 6/1948, dùng làm dinh Tổng trấn, sau đổi thành dinh Thủ hiến. Gắn với giai đoạn chính trị Nam Kỳ từ năm 1948.", ""], ["Ngô Đình Diệm", "Thủ tướng, sau là Tổng thống Việt Nam Cộng hòa", "Sau Hiệp định Genève năm 1954, sử dụng tòa nhà làm Dinh Quốc khách, một trong những lần thay đổi mục đích sử dụng tòa nhà sau năm 1954.", ""]],
+  quiz:[["Ai bị bắt giữ khi Dinh Khâm sai bị chiếm đêm 24/8/1945?", ["Nguyễn Văn Sâm", "Lê Văn Hoạch", "Trần Văn Hữu"], 0, "Khâm sai Đại thần Nguyễn Văn Sâm bị Thanh niên Tiền phong bắt giữ khoảng 22 giờ đêm 24/8/1945."], ["Từ ngày 25/8/1945, tòa nhà là trụ sở của cơ quan nào?", ["Dinh Quốc khách", "Ủy ban Hành chính lâm thời Nam Bộ", "Chính quyền Nam Kỳ tự trị"], 1, "Lâm ủy Nam Bộ đặt trụ sở tại đây, sau là Ủy ban Nhân dân Nam Bộ."], ["Năm 1954, Ngô Đình Diệm dùng tòa nhà làm gì?", ["Bảo tàng", "Dinh Thủ hiến", "Dinh Quốc khách"], 2, "Sau Hiệp định Genève, tòa nhà trở thành Dinh Quốc khách."]],
+  sources:[["Sở Văn hóa và Thể thao TP.HCM – Cách mạng tháng Tám năm 1945 tại Sài Gòn – Chợ Lớn – Gia Định", "https://svhtt.hochiminhcity.gov.vn/tin-chi-tiet/-/chi-tiet/cach-mang-thang-tam-nam-1945-tai-sai-gon-cho-lon-gia-%C4%91inh-23496-1.html"], ["Báo Quân đội nhân dân – Nhân chứng những ngày thu lịch sử", "https://www.qdnd.vn/xa-hoi/chinh-sach/nhan-chung-nhung-ngay-thu-lich-su-486304"], ["VnExpress – 5 câu đố về những công trình cổ nhất TP.HCM", "https://vnexpress.net/5-cau-do-ve-nhung-cong-trinh-co-nhat-tp-hcm-4399883-p9.html"], ["Đảng bộ TP.HCM – Dấu ấn Trần Văn Giàu trong Cách mạng tháng Tám 1945 ở Sài Gòn – Chợ Lớn – Gia Định", "https://www.hcmcpv.org.vn/tin-tuc/dau-an-tran-van-giau-trong-cach-mang-thang-tam-1945-o-sai-gon-cho-lon-gia-dinh-1491868590"], ["Bộ thông tin Du lịch Thành phố Hồ Chí Minh cơ bản (PDF)", "https://images.hcmcpv.org.vn/Uploads/File/02072022793B169C/Bo%20thong%20tin%20Du%20lich%20Thanh%20pho%20Ho%20Chi%20Minh%20co%20ban.pdf"]],
   imgSources:[]
 },
 {
@@ -468,32 +457,18 @@ const SITES = [
   rank:"Di tích lịch sử quốc gia (2002)",
   addr:"Đường Phan Văn Hớn, khu vực Bà Điểm (Hóc Môn cũ)", hours:"Khoảng 7:30–17:00. Nên xác nhận trước khi đến.",
   lat:10.8655, lng:106.5745,
-  summary:"Trường bắn của thực dân Pháp sau cuộc Khởi nghĩa Nam Kỳ 1940, nơi Tổng Bí thư Nguyễn Văn Cừ và đồng chí Phan Đăng Lưu hy sinh.",
-  story:"Ngày 28/8/1941, tại một ngã ba giữa vùng 18 thôn Vườn Trầu, thực dân Pháp xử bắn Nguyễn Văn Cừ, Tổng Bí thư Đảng Cộng sản Đông Dương giai đoạn 1938–1940. Cùng hy sinh với ông là Phan Đăng Lưu. Vùng đất cao từng có nhiều cây bằng lăng ấy về sau trở thành nơi người dân Hóc Môn tưởng nhớ những người đã ngã xuống.",
+  summary:"Trường bắn của thực dân Pháp sau cuộc Khởi nghĩa Nam Kỳ, nơi Tổng Bí thư Nguyễn Văn Cừ hy sinh năm 1941; vùng đất tiếp tục giữ phong trào kháng chiến chống Pháp suốt 1945–1954.",
+  story:"Những năm 1936–1939, Nguyễn Văn Cừ từng bám trụ và lãnh đạo phong trào cách mạng ở vùng Hóc Môn – Bà Điểm. Ít năm sau, ông trở lại nơi này trong tư cách người bị kết án. Ngày 28/8/1941, thực dân Pháp xử bắn vị Tổng Bí thư tại một ngã ba giữa vùng 18 thôn Vườn Trầu. Vùng đất cao từng có nhiều cây bằng lăng ấy về sau trở thành nơi người dân Hóc Môn tưởng nhớ những người đã ngã xuống.",
   context:["Ngã Ba Giồng còn có tên Ngã Ba Giồng Bằng Lăng. Tên gọi dân gian bắt nguồn từ vùng đất giồng tương đối cao, xưa có nhiều cây bằng lăng.",
            "Nơi đây thuộc vùng 18 thôn Vườn Trầu (Hóc Môn – Bà Điểm), vùng nông thôn có truyền thống trồng trầu và tham gia các phong trào yêu nước, sớm trở thành địa bàn quan trọng của phong trào cách mạng ở Nam Bộ."],
-  timeline:[["Trước 1940","18 thôn Vườn Trầu","Vùng quê trồng trầu, giàu truyền thống yêu nước."],
-            ["23/11/1940","Khởi nghĩa Nam Kỳ","Hóc Môn là một trong những địa bàn nổi bật của cuộc khởi nghĩa."],
-            ["1940–1941","Trường bắn","Sau khi khởi nghĩa thất bại, Pháp lập trường bắn tại đây để xử tử chiến sĩ cách mạng."],
-            ["28/8/1941","Hy sinh","Nguyễn Văn Cừ và Phan Đăng Lưu bị xử bắn tại Ngã Ba Giồng."],
-            ["30/12/2002","Di tích quốc gia","Được công nhận là di tích lịch sử cấp quốc gia."],
-            ["22/4/2025","Dâng hương","Chủ tịch nước Lương Cường dâng hương nhân 50 năm Ngày Giải phóng miền Nam."]],
-  events:[
-    {when:"23/11/1940",title:"Khởi nghĩa Nam Kỳ",text:"Cuộc khởi nghĩa bùng nổ ở nhiều địa phương Nam Bộ. Tại Hóc Môn, nhân dân 18 thôn Vườn Trầu cùng lực lượng cách mạng tiến công các cơ quan của chính quyền thực dân. Khởi nghĩa thất bại nhưng để lại dấu ấn sâu sắc trong lịch sử đấu tranh giành độc lập của Nam Bộ.",img:"Tư liệu Khởi nghĩa Nam Kỳ 1940"},
-    {when:"1940–1941",title:"Từ ngã ba thành trường bắn",text:"Sau thất bại của khởi nghĩa, thực dân Pháp tăng cường đàn áp. Ngã Ba Giồng trở thành một trong những trường bắn được lập ở Hóc Môn để xử tử chiến sĩ cách mạng và người yêu nước.",img:""},
-    {when:"Hằng năm",title:"Tưởng niệm và tri ân",text:"Khu di tích là nơi tổ chức dâng hương, tưởng niệm và giáo dục truyền thống. Ngày 22/4/2025, Chủ tịch nước Lương Cường cùng đoàn đại biểu đến dâng hương nhân kỷ niệm 50 năm Ngày Giải phóng miền Nam, thống nhất đất nước.",img:"Lễ dâng hương tại Khu tưởng niệm Ngã Ba Giồng"}],
+  timeline:[["23/11/1940", "Khởi nghĩa Nam Kỳ", "Hóc Môn là một trong những địa bàn nổi bật của cuộc khởi nghĩa."], ["1940–1941", "Trường bắn", "Sau khi khởi nghĩa thất bại, Pháp lập trường bắn tại đây."], ["28/8/1941", "Hy sinh", "Nguyễn Văn Cừ bị xử bắn tại Ngã Ba Giồng."], ["1945", "Tiếp nối phong trào", "Nhân dân Hóc Môn tham gia xây dựng chính quyền cách mạng."], ["23/9/1945", "Pháp trở lại", "Thực dân Pháp quay lại xâm lược Nam Bộ; nhân dân địa phương kháng chiến."], ["1946–1950", "Duy trì kháng chiến", "Các tổ chức cách mạng giữ cơ sở và liên hệ với lực lượng cách mạng."], ["1951–1954", "Kháng chiến chống Pháp", "Gắn với cuộc đấu tranh chung của quân dân Sài Gòn – Gia Định."], ["30/12/2002", "Di tích quốc gia", "Được công nhận là di tích lịch sử cấp quốc gia."]],
+  events:[{"when": "23/11/1940", "title": "Khởi nghĩa Nam Kỳ", "text": "Cuộc khởi nghĩa bùng nổ ở nhiều địa phương Nam Bộ. Tại Hóc Môn, nhân dân 18 thôn Vườn Trầu cùng lực lượng cách mạng tiến công các cơ quan của chính quyền thực dân. Khởi nghĩa thất bại, Pháp tăng cường đàn áp và lập trường bắn tại Ngã Ba Giồng.", "img": ""}, {"when": "Năm 1945", "title": "Tiếp nối phong trào cách mạng", "text": "Sau Cách mạng tháng Tám, nhân dân Hóc Môn tiếp tục tham gia xây dựng chính quyền cách mạng. Ngày 23/9/1945, thực dân Pháp quay trở lại xâm lược Nam Bộ, nhân dân địa phương tham gia kháng chiến. Những cơ sở cách mạng và tinh thần đấu tranh hình thành từ trước trở thành nền tảng cho phong trào kháng chiến.", "img": ""}, {"when": "1946–1950", "title": "Duy trì phong trào kháng chiến", "text": "Phong trào đấu tranh chống thực dân Pháp tiếp tục diễn ra ở Hóc Môn và Gia Định. Các tổ chức cách mạng vận động nhân dân tham gia kháng chiến, duy trì cơ sở và sự liên hệ với lực lượng cách mạng, phát huy truyền thống từ phong trào Nam Kỳ khởi nghĩa.", "img": ""}, {"when": "1951–1954", "title": "Tiếp tục kháng chiến chống Pháp", "text": "Phong trào kháng chiến ở Hóc Môn tiếp tục gắn với cuộc đấu tranh chung của quân dân Sài Gòn – Gia Định. Nhân dân tham gia các hoạt động phục vụ kháng chiến và đấu tranh chống sự kiểm soát của thực dân Pháp.", "img": ""}, {"when": "Hằng năm", "title": "Tưởng niệm và tri ân", "text": "Khu di tích là nơi tổ chức dâng hương, tưởng niệm và giáo dục truyền thống. Ngày 22/4/2025, Chủ tịch nước Lương Cường cùng đoàn đại biểu đến dâng hương nhân kỷ niệm 50 năm Ngày Giải phóng miền Nam, thống nhất đất nước.", "img": ""}],
   quote:"Một ngã ba giữa vườn trầu đã trở thành nơi khắc tên những người ngã xuống năm 1941.",
   note:{title:"Phân biệt cho đúng",text:"Ngày 28/8/1941 có nhiều chiến sĩ bị xử bắn ở Hóc Môn. Nguyễn Văn Cừ, Phan Đăng Lưu: tại Ngã Ba Giồng. Nguyễn Thị Minh Khai, Hà Huy Tập, Võ Văn Tần: tại trường bắn Nhà thương Giếng Nước."},
-  values:[["Lịch sử","Chứng tích về cuộc Khởi nghĩa Nam Kỳ và sự đàn áp của thực dân Pháp với phong trào cách mạng ở Nam Bộ."],["Tưởng niệm","Ghi nhớ sự hy sinh của Nguyễn Văn Cừ, Phan Đăng Lưu cùng nhiều cán bộ, chiến sĩ và đồng bào yêu nước."],["Giáo dục","Giúp thế hệ trẻ hiểu về lịch sử giành độc lập và tinh thần kiên cường của người dân Hóc Môn."],["Địa phương","Một địa điểm tiêu biểu khi tìm hiểu lịch sử vùng 18 thôn Vườn Trầu – Hóc Môn, Bà Điểm."]],
+  values:[["Chứng tích", "Ghi dấu sự đàn áp của thực dân Pháp đối với phong trào cách mạng Nam Kỳ."], ["Tưởng niệm", "Gắn liền với sự hy sinh của nhiều cán bộ, đảng viên và chiến sĩ cách mạng."], ["Truyền thống", "Thể hiện truyền thống đấu tranh của nhân dân Hóc Môn – Gia Định."], ["Giáo dục", "Là địa chỉ giáo dục truyền thống lịch sử, tinh thần yêu nước cho thế hệ trẻ."]],
   legacy:["Ngày 30/12/2002, Ngã Ba Giồng được công nhận là di tích lịch sử cấp quốc gia. Khu tưởng niệm hiện là nơi dâng hương, tri ân liệt sĩ, tham quan và giáo dục truyền thống cho học sinh, sinh viên."],
-  people:[["Nguyễn Văn Cừ","Tổng Bí thư Đảng Cộng sản Đông Dương (1938–1940)","Giữ vai trò quan trọng trong lãnh đạo và xây dựng đường lối cách mạng. Bị thực dân Pháp xử bắn tại Ngã Ba Giồng ngày 28/8/1941.",""],
-          ["Phan Đăng Lưu","Cán bộ lãnh đạo Đảng Cộng sản Đông Dương","Từng hoạt động báo chí và vận động cách mạng; bị bắt khi phong trào bị đàn áp. Hy sinh tại Ngã Ba Giồng ngày 28/8/1941.",""],
-          ["Nguyễn Thị Minh Khai","Bí thư Thành ủy Sài Gòn – Chợ Lớn","Bị xử bắn ngày 28/8/1941 ở Hóc Môn.","Hy sinh tại trường bắn Nhà thương Giếng Nước, không phải Ngã Ba Giồng."],
-          ["Hà Huy Tập","Tổng Bí thư Đảng Cộng sản Đông Dương (1936–1938)","Bị xử bắn ngày 28/8/1941 ở Hóc Môn.","Hy sinh tại trường bắn Nhà thương Giếng Nước, không phải Ngã Ba Giồng."],
-          ["Võ Văn Tần","Bí thư Xứ ủy Nam Kỳ","Giữ vai trò quan trọng trong phong trào cách mạng Nam Bộ; bị xử bắn ngày 28/8/1941.","Hy sinh tại trường bắn Nhà thương Giếng Nước."]],
-  quiz:[["Khởi nghĩa Nam Kỳ bùng nổ vào ngày nào?",["23/11/1940","19/8/1945","28/8/1941"],0,"Khởi nghĩa Nam Kỳ nổ ra ngày 23/11/1940."],
-        ["Ai bị thực dân Pháp xử bắn tại Ngã Ba Giồng ngày 28/8/1941?",["Hà Huy Tập","Nguyễn Văn Cừ","Võ Văn Tần"],1,"Nguyễn Văn Cừ và Phan Đăng Lưu hy sinh tại Ngã Ba Giồng."],
-        ["Tên gọi “Giồng” chỉ điều gì?",["Một con sông nhỏ","Tên một vị quan","Vùng đất cao, xưa nhiều cây bằng lăng"],2,"Giồng là vùng đất tương đối cao; nơi đây xưa có nhiều cây bằng lăng."]],
+  people:[["Nguyễn Văn Cừ (1912–1941)", "Tổng Bí thư Đảng Cộng sản Đông Dương", "Trong giai đoạn Mặt trận Dân chủ (1936–1939), ông từng hoạt động, bám trụ và lãnh đạo phong trào cách mạng ở khu vực Hóc Môn – Bà Điểm. Sau cuộc Nam Kỳ khởi nghĩa, ông bị thực dân Pháp bắt và hành quyết tại trường bắn Ngã Ba Giồng ngày 28/8/1941.", ""], ["Dương Văn Dương (1910–1946)", "Tướng quân, nhà chỉ huy quân sự Nam Bộ", "Còn gọi là Ba Dương, nhà chỉ huy quân sự nổi tiếng của lực lượng kháng chiến Nam Bộ những năm đầu chống Pháp (1945–1946). Ông từng giữ chức Khu trưởng Khu 7, góp phần xây dựng lực lượng vũ trang vùng ven Sài Gòn – Gia Định để bảo vệ các cửa ngõ hướng về trung tâm thành phố.", ""], ["Trần Văn Giàu (1911–2010)", "Bí thư Xứ ủy Nam Bộ, nhà sử học", "Năm 1945, với tư cách Bí thư Xứ ủy Nam Bộ kiêm Chủ tịch Ủy ban Hành chính lâm thời Nam Bộ, ông trực tiếp lãnh đạo chuẩn bị và tiến hành Tổng khởi nghĩa Tháng Tám tại Sài Gòn – Chợ Lớn – Gia Định, nơi chịu ảnh hưởng trực tiếp từ các căn cứ vùng Hóc Môn – Ngã Ba Giồng.", ""]],
+  quiz:[["Khởi nghĩa Nam Kỳ bùng nổ vào ngày nào?", ["23/11/1940", "19/8/1945", "23/9/1945"], 0, "Khởi nghĩa Nam Kỳ nổ ra ngày 23/11/1940."], ["Ai bị thực dân Pháp xử bắn tại Ngã Ba Giồng ngày 28/8/1941?", ["Dương Văn Dương", "Nguyễn Văn Cừ", "Trần Văn Giàu"], 1, "Tổng Bí thư Nguyễn Văn Cừ hy sinh tại trường bắn Ngã Ba Giồng."], ["Ngày 23/9/1945 gắn với sự kiện nào?", ["Hiệp định Genève", "Tổng khởi nghĩa ở Sài Gòn", "Thực dân Pháp quay lại xâm lược Nam Bộ"], 2, "Ngày 23/9/1945, Nam Bộ bước vào kháng chiến chống Pháp."]],
   sources:[["Tạp chí Khoa học xã hội TP.HCM – Ngã Ba Giồng, di tích lịch sử gắn với cuộc Khởi nghĩa Nam Kỳ","https://tapchikhxhhcm.org.vn/index.php/tapchikhxh/article/view/528"],
            ["Cổng thông tin Đảng bộ TP.HCM – Giới thiệu huyện Hóc Môn","https://www.hcmcpv.org.vn/van-ban/van-kien-tu-lieu/gioi-thieu-huyen-hoc-mon-1491378712"],
            ["Báo Pháp Luật Việt Nam – Chủ tịch nước Lương Cường dâng hương tại Khu Di tích lịch sử Quốc gia Ngã Ba Giồng","https://baophapluat.vn/chu-tich-nuoc-luong-cuong-dang-huong-tai-khu-di-tich-lich-su-quoc-gia-nga-ba-giong-post546174.html"]],
@@ -501,40 +476,23 @@ const SITES = [
 },
 {
   id:"com-tam-dai-han", star:0, starText:"", name:"Cà phê Đỗ Phủ – Cơm tấm Đại Hàn", sub:"Cơ sở bí mật của Biệt động Sài Gòn – Gia Định",
-  year:1946, yearLabel:"1946", period:"Kháng chiến chống Mỹ", area:"Trung tâm", type:"Cơ sở bí mật",
+  year:1946, yearLabel:"1946", period:"Kháng chiến chống Pháp", area:"Trung tâm", type:"Cơ sở bí mật",
   rank:"Đề xuất tên gọi di tích (11/2025)",
   addr:"113A Đặng Dung, phường Tân Định (Quận 1 cũ)", hours:"Khoảng 7:00–22:00 hằng ngày. Nên xác nhận trước khi đến.",
   lat:10.7909, lng:106.6884,
-  summary:"Quán cơm tấm, cà phê lâu đời từng là nơi liên lạc, cất giấu tài liệu của Biệt động Sài Gòn, ngay sát nhà một vị tướng Việt Nam Cộng hòa.",
-  story:"Trước khi về Sài Gòn mở quán, bà Nguyễn Thị Sự từng được giao hoạt động tình báo ở Nam Vang (Phnom Penh ngày nay). Ở căn nhà 113A Đặng Dung, bà cùng chồng là ông Đỗ Miễn bán cà phê và cơm tấm cho khách qua lại. Phía sau những đĩa cơm bình dân là hầm bí mật, hộp thư bí mật và lối thoát hiểm của Biệt động Sài Gòn.",
-  context:["Căn nhà được xây dựng năm 1946, do vợ chồng ông Đỗ Miễn và bà Nguyễn Thị Sự quản lý, kinh doanh. Quán bán cà phê, cơm tấm để tạo vỏ bọc cho hoạt động cách mạng.",
-           "Địa điểm được dùng làm nơi liên lạc, chuyển giao thư từ, tài liệu, phục vụ lực lượng Biệt động Sài Gòn. Nhà của tướng Ngô Quang Trưởng nằm ngay sát bên, khiến việc giữ cơ sở đòi hỏi sự kín đáo đặc biệt."],
-  timeline:[["1946","Xây nhà","Vợ chồng ông Đỗ Miễn, bà Nguyễn Thị Sự quản lý và kinh doanh."],
-            ["Trước 1964","Quán cơm thành cơ sở","Bán cà phê, cơm tấm làm vỏ bọc cho việc liên lạc, chuyển tài liệu."],
-            ["1964–1968","Mạng lưới Biệt động","Nơi hội họp, liên lạc, chuyển tài liệu và tiền; có hầm nổi, hộp thư bí mật, lối thoát hiểm."],
-            ["Xuân 1968","Mậu Thân","Một mắt xích trong công tác chuẩn bị, hỗ trợ đợt Tổng tiến công và nổi dậy."],
-            ["2017","Mở cửa trở lại","Vừa bán cà phê, cơm tấm vừa giới thiệu hầm bí mật và hiện vật."],
-            ["11/2025","Đề xuất tên gọi di tích","Tọa đàm khoa học thống nhất đề xuất tên gọi di tích."]],
-  events:[
-    {when:"Từ trước 1964",title:"Xây cơ sở bí mật trong lòng Sài Gòn",text:"Vợ chồng ông Đỗ Miễn và bà Nguyễn Thị Sự dùng việc buôn bán làm vỏ bọc để liên lạc, cất giữ và chuyển giao tài liệu. Vì nằm sát nhà tướng Ngô Quang Trưởng, cơ sở phải hoạt động hết sức thận trọng.",img:"Căn nhà 113A Đặng Dung"},
-    {when:"Xuân Mậu Thân 1968",title:"Một mắt xích của Tổng tiến công",text:"Cơ sở 113A Đặng Dung nằm trong mạng lưới của Biệt động Sài Gòn, gắn với công tác chuẩn bị và hỗ trợ đợt Tổng tiến công và nổi dậy Xuân Mậu Thân 1968. Đây là nơi hậu thuẫn, không phải nơi trực tiếp diễn ra một trận đánh cụ thể.",img:"Tư liệu lực lượng Biệt động Sài Gòn"},
-    {when:"Sau chiến tranh",title:"Bảo tồn và phục dựng",text:"Các hầm bí mật, lối thoát hiểm và hiện vật được phục hồi để giới thiệu với công chúng, giúp thế hệ trẻ hình dung cách lực lượng biệt động xây mạng lưới bí mật ngay trong đô thị.",img:""}],
-  quote:"Phía sau những đĩa cơm tấm bình dân là hầm bí mật của Biệt động Sài Gòn.",
-  note:{title:"Hộp thư bí mật",text:"Thư từ, tài liệu, tiền bạc được chuyển qua những hộp thư giấu trong nhà. Khi có động, người trong cơ sở xuống hầm nổi hoặc theo lối thoát hiểm ra ngoài."},
+  summary:"Quán cà phê, cơm tấm mở từ năm 1946 của vợ chồng Đỗ Miễn – Nguyễn Thị Sự, những người tham gia cách mạng từ năm 1945; về sau căn nhà trở thành cơ sở bí mật của Biệt động Sài Gòn.",
+  story:"Sau Cách mạng tháng Tám năm 1945, ông Đỗ Miễn và bà Nguyễn Thị Sự nhận nhiệm vụ từ ông Trần Văn Lai: dán cờ, rải truyền đơn chống thực dân Pháp ở Tân Định và Đa Kao. Một năm sau, hai vợ chồng dựng căn nhà 113A Đặng Dung và mở quán cà phê, cơm tấm mang tên Đỗ Phủ. Theo lời kể của ông Trần Vũ Bình, bà Sự, người quê Hải Phòng, còn từng được giao hoạt động tình báo ở Nam Vang.",
+  context:["Năm 1945, sau Cách mạng tháng Tám, ông Đỗ Miễn và bà Nguyễn Thị Sự tham gia hoạt động cách mạng, được giao dán cờ, rải truyền đơn chống thực dân Pháp tại khu vực Tân Định và Đa Kao.", "Năm 1946, ngôi nhà số 113A Đặng Dung được xây dựng. Hai vợ chồng bắt đầu kinh doanh cà phê, cơm tấm dưới tên gọi Đỗ Phủ. Trong suốt giai đoạn 1946–1954, khi cuộc kháng chiến chống Pháp diễn ra ở Nam Bộ và Sài Gòn, nơi đây tồn tại như một ngôi nhà kiêm cơ sở kinh doanh."],
+  timeline:[["1945", "Dán cờ, rải truyền đơn", "Vợ chồng Đỗ Miễn – Nguyễn Thị Sự hoạt động ở Tân Định, Đa Kao."], ["1946", "Xây nhà, mở quán", "Căn nhà 113A Đặng Dung ra đời; quán cà phê, cơm tấm mang tên Đỗ Phủ."], ["1946–1954", "Giữa thời chống Pháp", "Địa điểm tồn tại dưới hình thức nhà ở và cơ sở kinh doanh."], ["1954", "Hiệp định Genève", "Bước ngoặt của kháng chiến chống Pháp. Chưa có tài liệu xác nhận sự kiện riêng tại quán năm này."], ["1957–1962", "Cơ sở bí mật", "Ông Trần Văn Lai xây dựng các cơ sở bí mật, trong đó có căn nhà 113A Đặng Dung."]],
+  events:[{"when": "Năm 1945", "title": "Dán cờ, rải truyền đơn ở Tân Định – Đa Kao", "text": "Sau Cách mạng tháng Tám, ông Trần Văn Lai giao cho vợ chồng Đỗ Miễn – Nguyễn Thị Sự nhiệm vụ dán cờ, rải truyền đơn chống thực dân Pháp tại Tân Định và Đa Kao. Đây là những hoạt động cách mạng đầu tiên của hai người.", "img": ""}, {"when": "Năm 1946", "title": "Quán Đỗ Phủ ra đời", "text": "Ngôi nhà số 113A Đặng Dung được xây dựng. Vợ chồng ông Đỗ Miễn bắt đầu bán cà phê và cơm tấm dưới tên gọi Đỗ Phủ, cái tên vẫn còn trên bảng hiệu đến ngày nay.", "img": ""}, {"when": "1946–1954", "title": "Một ngôi nhà giữa thời kháng chiến", "text": "Trong giai đoạn kháng chiến chống Pháp ở Nam Bộ và Sài Gòn, địa điểm tồn tại dưới hình thức nhà ở và cơ sở kinh doanh. Năm 1954, Hiệp định Genève được ký kết; hiện chưa có tài liệu xác nhận một sự kiện riêng diễn ra tại quán trong năm này.", "img": ""}, {"when": "1957–1962", "title": "Trở thành cơ sở bí mật của Biệt động", "text": "Ông Trần Văn Lai được giao xây dựng các cơ sở bí mật, trong đó có căn nhà 113A Đặng Dung. Ông Đỗ Miễn trực tiếp trông coi cơ sở bí mật của lực lượng Biệt động Sài Gòn tại đây.", "img": ""}],
+  quote:"Từ những tờ truyền đơn năm 1945 đến quán cơm tấm năm 1946, căn nhà 113A Đặng Dung lớn lên cùng cuộc kháng chiến.",
+  note:{"title": "Nhiệm vụ đầu tiên · 1945", "text": "Việc: dán cờ, rải truyền đơn chống Pháp. Địa bàn: Tân Định, Đa Kao. Người giao việc: ông Năm Lai (Trần Văn Lai). Người nhận: vợ chồng Đỗ Miễn – Nguyễn Thị Sự."},
   values:[["Lịch sử","Ghi dấu hoạt động của mạng lưới Biệt động Sài Gòn – Gia Định trong kháng chiến."],["Kiến trúc & tư liệu","Căn nhà cổ, hầm bí mật, hộp thư và hiện vật tái hiện hoạt động bí mật trong lòng đô thị."],["Giáo dục","Cho thấy sự mưu trí, kiên trì và vai trò của các cơ sở cách mạng trong lịch sử TP.HCM."],["Văn hóa","Kết hợp ẩm thực Sài Gòn xưa với tìm hiểu lịch sử, tạo nên một không gian trải nghiệm đặc biệt."]],
   legacy:["Quán mở lại năm 2017, tiếp tục bán cà phê và cơm tấm, đồng thời giới thiệu hầm bí mật, vật dụng và câu chuyện về Biệt động Sài Gòn.",
           "Tháng 11/2025, một buổi tọa đàm khoa học thống nhất đề xuất tên gọi di tích là “Quán cà phê Đỗ Phủ – cơm tấm Đại Hàn, cơ sở bí mật của Biệt động Sài Gòn – Gia Định”."],
-  people:[["Trần Văn Lai (Năm Lai, Mai Hồng Quế)","Người tổ chức, quản lý mạng lưới cơ sở bí mật","Chiến sĩ Biệt động Sài Gòn, Anh hùng Lực lượng vũ trang nhân dân. Căn nhà 113A Đặng Dung là một trong những cơ sở thuộc mạng lưới do ông tổ chức.",""],
-          ["Đỗ Miễn","Chủ cơ sở","Cùng vợ dùng việc buôn bán làm vỏ bọc, phối hợp với ông Trần Văn Lai xây dựng cơ sở bí mật.",""],
-          ["Nguyễn Thị Sự","Người duy trì cơ sở","Cùng chồng vận hành quán ăn. Theo báo chí, bà từng hoạt động tình báo ở Nam Vang trước khi về Sài Gòn.",""],
-          ["Ngô Quang Trưởng","Tướng Quân lực Việt Nam Cộng hòa","Nhà ông nằm sát căn nhà 113A Đặng Dung, tạo nên bối cảnh đặc biệt cho cơ sở.","Không phải thành viên của mạng lưới cách mạng tại đây."],
-          ["Trần Vũ Bình","Người kế tục công việc bảo tồn","Con trai ông Trần Văn Lai, dành nhiều công sức tìm kiếm, phục dựng các căn cứ và hiện vật của Biệt động Sài Gòn, trong đó có quán này.",""]],
-  quiz:[["Căn nhà 113A Đặng Dung được xây dựng năm nào?",["1946","1964","1968"],0,"Căn nhà được xây năm 1946."],
-        ["Quán là cơ sở bí mật của lực lượng nào?",["Thanh niên Tiền phong","Biệt động Sài Gòn – Gia Định","Tiểu đoàn Ngô Gia Tự"],1,"Đây là cơ sở của Biệt động Sài Gòn – Gia Định."],
-        ["Điều gì khiến cơ sở phải giữ kín đáo đặc biệt?",["Nằm cạnh đồn cảnh sát","Nằm trong chợ","Nằm sát nhà tướng Ngô Quang Trưởng"],2,"Nhà tướng Ngô Quang Trưởng nằm ngay sát căn nhà."]],
-  sources:[["VnExpress – Bí ẩn đằng sau quán cơm tấm hơn nửa thế kỷ ở Sài Gòn","https://vnexpress.net/bi-an-dang-sau-quan-com-tam-hon-nua-the-ky-o-sai-gon-4261478.html"],
-           ["Tuổi Trẻ – Quán cà phê Đỗ Phủ, cơm tấm Đại Hàn: Cơ sở bí mật của Biệt động Sài Gòn – Gia Định","https://tuoitre.vn/quan-ca-phe-do-phu-com-tam-dai-han-co-so-bi-mat-cua-biet-dong-sai-gon-gia-dinh-20251114152645266.htm"],
-           ["Dân trí – Bí ẩn quán cơm tấm ở TP.HCM có căn hầm ngay trong tủ áo","https://dantri.com.vn/du-lich/bi-an-quan-com-tam-o-tphcm-co-can-ham-ngay-trong-tu-ao-20250501061814441.htm"]],
+  people:[["Trần Văn Lai (Năm Lai, Mai Hồng Quế)", "Cán bộ cách mạng, Biệt động Sài Gòn – Gia Định", "Sau Cách mạng tháng Tám, ông giao cho vợ chồng Đỗ Miễn – Nguyễn Thị Sự nhiệm vụ dán cờ, rải truyền đơn chống Pháp tại Tân Định và Đa Kao. Giai đoạn 1957–1962, ông được giao xây dựng các cơ sở bí mật, trong đó có căn nhà 113A Đặng Dung; về sau ông giữ vai trò quan trọng trong lực lượng Biệt động Sài Gòn – Gia Định.", ""], ["Đỗ Miễn", "Chủ quán, người trông coi cơ sở bí mật", "Cùng vợ tham gia cách mạng từ sau Cách mạng tháng Tám năm 1945, dán cờ, rải truyền đơn chống Pháp. Từ năm 1946 cùng bà Nguyễn Thị Sự kinh doanh tại 113A Đặng Dung; sau này trực tiếp trông coi cơ sở bí mật của Biệt động Sài Gòn.", ""], ["Nguyễn Thị Sự", "Người tham gia cách mạng, đồng sáng lập quán", "Quê Hải Phòng, vợ ông Đỗ Miễn, tham gia hoạt động cách mạng sau Cách mạng tháng Tám. Theo lời kể của ông Trần Vũ Bình, bà từng được giao hoạt động tình báo tại Nam Vang (Phnom Penh). Sau khi trở về, bà cùng chồng bán cà phê, cơm tấm tại 113A Đặng Dung.", ""]],
+  quiz:[["Căn nhà 113A Đặng Dung được xây dựng năm nào?", ["1946", "1954", "1962"], 0, "Căn nhà được xây năm 1946, cũng là năm quán Đỗ Phủ bắt đầu kinh doanh."], ["Sau Cách mạng tháng Tám, vợ chồng Đỗ Miễn được giao nhiệm vụ gì?", ["Đào địa đạo", "Dán cờ, rải truyền đơn chống Pháp", "Chiếm Dinh Khâm Sai"], 1, "Hai người dán cờ, rải truyền đơn ở Tân Định và Đa Kao."], ["Bà Nguyễn Thị Sự quê ở đâu?", ["Huế", "Cần Thơ", "Hải Phòng"], 2, "Bà Nguyễn Thị Sự quê ở Hải Phòng."]],
+  sources:[["Báo Công an Nhân dân – Dấu chân Biệt động tại địa chỉ đỏ", "https://cand.vn/Tu-lieu-antg/dau-chan-biet-dong-tai-dia-chi-do-i760735/"], ["VnExpress – Bí ẩn đằng sau quán cơm tấm hơn nửa thế kỷ ở Sài Gòn", "https://vnexpress.net/bi-an-dang-sau-quan-com-tam-hon-nua-the-ky-o-sai-gon-4261478.html"], ["Báo Nhân Dân – Theo dấu chân Biệt động Sài Gòn", "https://nhandan.vn/special/tram-giao-lien-trao-doi-thu-tu-mat/index.html"], ["Báo Nhân Dân – Phát huy giá trị di tích quán cà phê Đỗ Phủ và cơm tấm Đại Hàn", "https://nhandan.vn/phat-huy-gia-tri-di-tich-quan-ca-phe-do-phu-com-tam-dai-han-post923125.html"]],
   imgSources:[["Vietnam.vn – Tour lịch sử tại TP.HCM","https://www.vietnam.vn/en/tour-lich-su-bung-no-du-khach-den-tp-ho-chi-minh-dong-chua-tung-co"],["QĐND – Lực lượng đặc công biệt động tác chiến trong thành phố","https://www.qdnd.vn/quoc-phong-an-ninh/nghe-thuat-quan-su-vn/luc-luong-dac-cong-biet-dong-tac-chien-trong-thanh-pho-717526"],["SGGP – Cà phê biệt động Sài Gòn giữa lòng đô thị","https://www.sggp.org.vn/ca-phe-biet-dong-sai-gon-giua-long-do-thi-post491199.html"]]
 },
 {
@@ -545,35 +503,22 @@ const SITES = [
   lat:10.7852, lng:106.6331,
   summary:"Một trong những hệ thống địa đạo hình thành sớm ở phía tây Sài Gòn, được đào từ năm 1947 và sử dụng qua cả hai cuộc kháng chiến.",
   story:"Ông Nguyễn Văn Lự là một trong 12 chiến sĩ cách mạng đào những đoạn địa đạo đầu tiên ở Phú Thọ Hòa. Theo lời kể của con trai ông, Nguyễn Hùng Minh, gia đình ông gắn bó trực tiếp với công trình này từ những ngày đầu, khi các hầm bí mật đơn lẻ dần được nối thành đường hầm nhiều ngách.",
-  context:["Địa đạo hình thành tại thôn Lộc Hòa và vùng phụ cận, thuộc khu vực Phú Thọ Hòa xưa. Địa hình cao, cây cối rậm rạp và sự che chở của nhân dân giúp nơi đây trở thành địa bàn hoạt động cách mạng quan trọng.",
-           "Từ nhu cầu bảo vệ lực lượng trước các cuộc càn quét của quân Pháp, người dân xây các hầm bí mật, rồi cải tiến thành hệ thống có nhiều ngách, lỗ thông hơi và cửa hầm ngụy trang."],
-  timeline:[["1947","Bắt đầu đào","Từ hầm bí mật đơn lẻ phát triển thành hệ thống địa đạo."],
-            ["29/3/1948","Kho bom Bảy Hiền","Một hoạt động quân sự tiêu biểu của lực lượng kháng chiến trong khu vực."],
-            ["1949–1954","Tiến công Tân Sơn Nhất","Nhiều hoạt động nhằm vào sân bay Tân Sơn Nhất và các kho bom."],
-            ["31/5–1/6/1954","Đồn Phú Thọ Hòa","Tiến công các đồn Phú Thọ Hòa và Phạm Văn Tụng."],
-            ["1954–1975","Kháng chiến chống Mỹ","Địa đạo và mạng lưới cơ sở tiếp tục được sử dụng."],
-            ["28/6/1996","Di tích quốc gia","Công nhận theo Quyết định số 1460-QĐ/VH."]],
-  events:[
-    {when:"1947",title:"Hình thành căn cứ địa đạo",text:"Để bảo vệ lực lượng trước các cuộc càn quét, nhân dân Lộc Hòa và vùng lân cận xây hầm bí mật, rồi phát triển thành hệ thống địa đạo. Trong kháng chiến chống Pháp, địa đạo mở rộng thành mạng lưới liên xã, che giấu cán bộ, du kích, bộ đội và giữ đường liên lạc.",img:"Cửa hầm ngụy trang"},
-    {when:"29/3/1948",title:"Trận đánh kho bom Bảy Hiền",text:"Một trong những hoạt động quân sự tiêu biểu của lực lượng kháng chiến trong khu vực. Mạng lưới căn cứ quanh Phú Thọ Hòa góp phần duy trì lực lượng và hỗ trợ kháng chiến ở vùng ven Sài Gòn.",img:"Tư liệu trận kho bom Bảy Hiền"},
-    {when:"1949–1954",title:"Những đợt tiến công vùng ven",text:"Theo tư liệu lịch sử địa phương, lực lượng kháng chiến có nhiều hoạt động nhằm vào sân bay Tân Sơn Nhất và các kho bom. Đêm 31/5 rạng sáng 1/6/1954, lực lượng kháng chiến tiến công các đồn Phú Thọ Hòa và Phạm Văn Tụng.",img:""}],
+  context:["Địa đạo hình thành tại ấp Lộc Hòa và vùng phụ cận, thuộc xã Phú Thọ Hòa xưa. Sau Cách mạng tháng Tám, nhân dân Phú Thọ Hòa giành chính quyền; khi cuộc kháng chiến Nam Bộ bùng nổ ngày 23/9/1945, Ủy ban kháng chiến xã được thành lập tại đình Lộc Hòa.", "Chi bộ Đảng lãnh đạo nhân dân xây dựng cơ sở cách mạng, chuẩn bị cho cuộc kháng chiến lâu dài. Năm 1947, chi bộ chủ trương đào địa đạo; người dân vừa đào vừa giữ bí mật công trình."],
+  timeline:[["1945", "Giành chính quyền", "Nhân dân Phú Thọ Hòa giành chính quyền sau Cách mạng tháng Tám."], ["23/9/1945", "Nam Bộ kháng chiến", "Ủy ban kháng chiến xã Phú Thọ Hòa thành lập tại đình Lộc Hòa."], ["1947", "Đào địa đạo", "Chi bộ xã chủ trương đào địa đạo tại ấp Lộc Hòa."], ["1948", "Bảo vệ bí mật", "Trần Văn Kiên hy sinh; Nguyễn Văn Ưng, Nguyễn Văn Bẩm bị đày ra Côn Đảo."], ["1950", "Đánh sân bay Tân Sơn Nhất", "Đơn vị đặc công ém quân, xuất phát từ địa đạo."], ["8/1952", "Kho bom Phú Thọ", "Địa đạo là căn cứ xuất phát cho trận đánh."], ["1–2/6/1954", "Kho bom Phú Thọ", "Trận tiến công gây thiệt hại lớn cho hậu cần quân sự Pháp."], ["28/6/1996", "Di tích quốc gia", "Công nhận theo Quyết định số 1460-QĐ/VH."]],
+  events:[{"when": "Năm 1945", "title": "Xây dựng chính quyền và cơ sở kháng chiến", "text": "Sau Cách mạng tháng Tám, nhân dân Phú Thọ Hòa giành chính quyền. Ngày 23/9/1945, kháng chiến Nam Bộ bùng nổ; tại đình Lộc Hòa, Ủy ban kháng chiến xã được thành lập. Chi bộ Đảng lãnh đạo nhân dân xây dựng cơ sở, chuẩn bị cho cuộc kháng chiến lâu dài.", "img": ""}, {"when": "Năm 1947", "title": "Chi bộ tổ chức đào địa đạo", "text": "Chi bộ xã Phú Thọ Hòa chủ trương đào địa đạo tại ấp Lộc Hòa. Nhân dân tham gia xây dựng và giữ bí mật công trình. Địa đạo trở thành nơi hội họp bí mật của Chi bộ Phú Thọ Hòa và Chi đội 12, giúp duy trì hoạt động cách mạng trong vùng địch kiểm soát.", "img": ""}, {"when": "Năm 1948", "title": "Giữ bí mật bằng cả mạng sống", "text": "Cán bộ và người dân tiếp tục bảo vệ bí mật địa đạo. Ông Trần Văn Kiên, Chủ nhiệm thôn bộ Việt Minh, hy sinh năm 1948. Hai chiến sĩ Nguyễn Văn Ưng và Nguyễn Văn Bẩm bị bắt, rồi bị đày ra Côn Đảo vì liên quan đến việc bảo vệ địa đạo.", "img": ""}, {"when": "Năm 1950", "title": "Ém quân đánh sân bay Tân Sơn Nhất", "text": "Một đơn vị đặc công sử dụng địa đạo làm nơi ém quân và xuất phát cho trận đánh sân bay Tân Sơn Nhất, cho thấy vai trò của địa đạo trong việc hỗ trợ hoạt động quân sự của lực lượng cách mạng.", "img": ""}, {"when": "1952 và 1954", "title": "Những trận đánh kho bom Phú Thọ", "text": "Tháng 8/1952, địa đạo là căn cứ xuất phát cho trận đánh kho bom Phú Thọ. Đêm 1 rạng sáng 2/6/1954, trận tiến công kho bom Phú Thọ tiếp tục diễn ra, gây thiệt hại lớn cho hệ thống hậu cần quân sự của Pháp.", "img": ""}],
   extra:{title:"Bên dưới mặt đất",items:[["Hai tầng","Lòng hầm cao khoảng 1 m, rộng 0,6–0,8 m; nhiều ngách và lỗ thông hơi. Một số đoạn có vách ngăn như các toa xe lửa."],["Ngụy trang","Cửa hầm được che đậy theo địa hình bên trên, giúp giữ nơi trú ẩn và liên lạc an toàn."],["Quy mô","Toàn mạng lưới liên xã từng dài hơn 10 km; đoạn phục dựng để tham quan hiện nay ngắn hơn nhiều."]]},
   quote:"Những đường hầm cao chừng một mét đã giữ một vùng kháng chiến bám trụ sát nách Sài Gòn.",
   note:{title:"Kích thước lòng hầm",text:"Cao ≈ 1 m · rộng 0,6–0,8 m · 2 tầng. Nhiều ngách, lỗ thông hơi. Có đoạn ngăn vách như toa xe lửa. Toàn mạng lưới > 10 km."},
   values:[["Quân sự","Cho thấy cách tổ chức căn cứ, bảo vệ cán bộ và duy trì lực lượng ở vùng ven đô thị."],["Cộng đồng","Ghi nhận công sức của nhân dân địa phương trong việc đào hầm, bảo vệ và hỗ trợ lực lượng cách mạng."],["Kiến trúc","Công trình địa đạo có cấu trúc đặc trưng, hình thành từ nhu cầu thực tế của chiến tranh."],["Giáo dục","Giúp học sinh hiểu về lịch sử kháng chiến ở TP.HCM, tinh thần sáng tạo và tình quân dân."]],
   legacy:["Sau khi được công nhận là di tích cấp quốc gia năm 1996, khu di tích được tu bổ, phục dựng cảnh quan và xây không gian trưng bày. Ngày nay nơi đây phục vụ tham quan, tìm hiểu lịch sử địa phương và giáo dục truyền thống cho thế hệ trẻ."],
-  people:[["Nguyễn Văn Lự","Một trong 12 chiến sĩ đào địa đạo đầu tiên","Theo lời kể của con trai ông, Nguyễn Hùng Minh, gia đình ông gắn bó trực tiếp với việc xây dựng công trình.",""],
-          ["Chi đội 12","Đơn vị vũ trang","Một trong những lực lượng được tư liệu nhắc đến là từng được địa đạo che giấu, hỗ trợ.",""],
-          ["Tiểu đoàn Ký Con","Đơn vị vũ trang","Phản ánh sự liên kết giữa căn cứ địa phương với các lực lượng kháng chiến vùng ven Sài Gòn.",""],
-          ["Tiểu đoàn Ngô Gia Tự và Chi đội 13","Đơn vị vũ trang","Được tư liệu địa phương nhắc đến trong mối liên hệ với địa đạo, góp phần duy trì phong trào khi bị Pháp càn quét.",""]],
-  quiz:[["Địa đạo Phú Thọ Hòa bắt đầu được xây từ năm nào?",["1940","1947","1960"],1,"Địa đạo được xây dựng từ năm 1947."],
-        ["Hệ thống địa đạo có mấy tầng?",["Hai tầng","Một tầng","Ba tầng"],0,"Tư liệu giới thiệu địa đạo có hai tầng."],
-        ["Địa đạo được công nhận di tích cấp quốc gia năm nào?",["2002","2012","1996"],2,"Ngày 28/6/1996, theo Quyết định số 1460-QĐ/VH."]],
+  people:[["Trần Văn Kiên", "Chủ nhiệm thôn bộ Việt Minh", "Cùng cán bộ và người dân địa phương bảo vệ bí mật địa đạo. Ông hy sinh năm 1948.", ""], ["Nguyễn Văn Ưng", "Chiến sĩ bảo vệ địa đạo", "Bị bắt năm 1948 và bị đày ra Côn Đảo vì liên quan đến việc bảo vệ địa đạo.", ""], ["Nguyễn Văn Bẩm", "Chiến sĩ bảo vệ địa đạo", "Bị bắt cùng thời gian với ông Nguyễn Văn Ưng, sau đó bị đày ra Côn Đảo.", ""], ["Chi đội 12", "Đơn vị vũ trang", "Cùng Chi bộ Phú Thọ Hòa dùng địa đạo làm nơi hội họp bí mật từ năm 1947.", ""], ["Nguyễn Văn Lự", "Một trong 12 chiến sĩ đào địa đạo đầu tiên", "Theo lời kể của con trai ông, Nguyễn Hùng Minh, gia đình ông gắn bó trực tiếp với việc xây dựng công trình.", ""]],
+  quiz:[["Địa đạo Phú Thọ Hòa bắt đầu được đào năm nào?", ["1947", "1945", "1952"], 0, "Năm 1947, chi bộ xã chủ trương đào địa đạo tại ấp Lộc Hòa."], ["Địa đạo là nơi hội họp bí mật của chi bộ và đơn vị nào?", ["Tráng đoàn Lê Lai", "Chi đội 12", "Biệt động Sài Gòn"], 1, "Chi bộ Phú Thọ Hòa và Chi đội 12 hội họp bí mật tại địa đạo."], ["Năm 1950, đặc công ém quân tại địa đạo để đánh mục tiêu nào?", ["Dinh Khâm Sai", "Kho bom Bảy Hiền", "Sân bay Tân Sơn Nhất"], 2, "Địa đạo là nơi ém quân và xuất phát cho trận đánh sân bay Tân Sơn Nhất."]],
   sources:[["Báo Tuổi Trẻ – Lãnh đạo TP.HCM khảo sát địa đạo Phú Thọ Hòa","https://tuoitre.vn/lanh-dao-tp-hcm-khao-sat-dia-dao-phu-tho-hoa-20220804102422348.htm"],
            ["Báo Sài Gòn Giải Phóng – Địa đạo Phú Thọ Hòa là sáng tạo độc đáo của thế hệ tiền nhân","https://www.sggp.org.vn/dia-dao-phu-tho-hoa-la-sang-tao-doc-dao-cua-the-he-tien-nhan-post646348.html"],
            ["Cổng thông tin Đảng bộ TP.HCM – Phát huy giá trị Di tích lịch sử Địa đạo Phú Thọ Hòa","https://www.hcmcpv.org.vn/tin-tuc/phat-huy-gia-tri-di-tich-lich-su-dia-dao-phu-tho-hoa-gop-phan-thuc-hien-tot-cong-tac-tuyen-truyen-gi-1491905866"],
            ["Công báo TP.HCM – Tu bổ, phục dựng cảnh quan di tích địa đạo Phú Thọ Hòa","https://congbao.hochiminhcity.gov.vn/tin-tuc-tong-hop/tu-bo-phuc-dung-canh-quan-di-tich-%C4%91ia-%C4%91ao-phu-tho-hoa"]],
-  imgSources:[]
+  imgSources:[],
+  meaning:"Địa đạo Phú Thọ Hòa không đơn thuần là một công trình quân sự mà còn là cơ sở hoạt động cách mạng quan trọng trong giai đoạn 1945–1954. Nơi đây gắn với hoạt động của Chi bộ Đảng, Chi đội 12, phong trào đấu tranh của nhân dân địa phương và sự hy sinh của nhiều cán bộ, chiến sĩ. Việc nhân dân xây dựng, bảo vệ và duy trì địa đạo thể hiện mối quan hệ gắn bó giữa cách mạng với quần chúng."
 }];
 SITES.sort((a,b)=>a.year-b.year);
 const byId = Object.fromEntries(SITES.map(s=>[s.id,s]));
@@ -745,7 +690,7 @@ function vip(s){
 }
 function peopleList(s){
   const k=s.star??0;
-  return `<div class="people">${s.people.map((p,i)=>[p,i]).filter(([,i])=>i!==k).slice(0,4).map(([p,i])=>`<div class="person"><figure style="margin:0" title="${esc(cap(s.id+"-p"+i))}">${ph(s.id+"-p"+i,p[0])}</figure><div><h3>${esc(p[0])}</h3><p class="role">${esc(p[1])}</p><p>${esc(p[2])}</p>${p[3]?`<p class="warn">${esc(p[3])}</p>`:""}</div></div>`).join("")}</div>`;
+  return `<div class="people">${s.people.map((p,i)=>[p,i]).filter(([,i])=>i!==k).slice(0,5).map(([p,i])=>`<div class="person"><figure style="margin:0" title="${esc(cap(s.id+"-p"+i))}">${ph(s.id+"-p"+i,p[0])}</figure><div><h3>${esc(p[0])}</h3><p class="role">${esc(p[1])}</p><p>${esc(p[2])}</p>${p[3]?`<p class="warn">${esc(p[3])}</p>`:""}</div></div>`).join("")}</div>`;
 }
 function detail(s){
   const i=SITES.indexOf(s), next=SITES[i+1], prev=SITES[i-1];
@@ -774,7 +719,7 @@ function detail(s){
         ${s.extra?`<h3 style="font-size:22px;margin:32px 0 12px">${esc(s.extra.title)}</h3>${IMG[s.id+"-g0"]?`<div class="gallery">${[0,1,2].filter(g=>IMG[s.id+"-g"+g]).map(g=>`<figure>${ph(s.id+"-g"+g,"")}<figcaption class="c">${esc(cap(s.id+"-g"+g))}</figcaption></figure>`).join("")}</div>`:""}<div class="values">${s.extra.items.map(v=>`<div><b>${esc(v[0])}</b>${esc(v[1])}</div>`).join("")}</div>`:""}
       </section>
       <p class="pull">${esc(s.quote)}</p>
-      <section id="y-nghia"><p class="label">Ý nghĩa</p><h2>Giá trị của địa điểm</h2><div class="values">${s.values.map(v=>`<div><b>${esc(v[0])}</b>${esc(v[1])}</div>`).join("")}</div></section>
+      <section id="y-nghia"><p class="label">Ý nghĩa</p><h2>Giá trị của địa điểm</h2>${s.meaning?`<p class="lede-sm">${esc(s.meaning)}</p>`:""}<div class="values">${s.values.map(v=>`<div><b>${esc(v[0])}</b>${esc(v[1])}</div>`).join("")}</div></section>
       <section id="anh-huong"><p class="label">Ảnh hưởng</p><h2>Từ di tích đến lớp học</h2>${s.legacy.map(p=>`<p>${esc(p)}</p>`).join("")}</section>
       <section id="nhan-vat"><p class="label">Nhân vật liên quan</p><h2>Những con người ở đây</h2>${vip(s)}${peopleList(s)}</section>
       <section id="hom-nay"><p class="label">Hôm nay</p><h2>Hôm nay nơi này thế nào?</h2>
