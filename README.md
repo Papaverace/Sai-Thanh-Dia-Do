@@ -7,10 +7,10 @@ Trang web giới thiệu 4 địa điểm cách mạng ở TP. Hồ Chí Minh: D
 **Xem web:** https://papaverace.github.io/Sai-Thanh-Dia-Do/
 
 ## Nhóm thực hiện
-- Trân, Minh: lập trình
-- Nam, Khang: ý tưởng
-- Di: thiết kế giao diện
-- Đức, Mon: tư liệu, hình ảnh
+- Dương Cao Bình Minh, Triệu Huỳnh Minh Trân: Lập trình
+- Phạm Hoàng Nam, Phạm Trịnh Minh Khang: Ý tưởng
+- Trịnh An Di: Thiết kế giao diện
+- Nguyễn Lượng Ka Mon, Nguyễn Mạnh Đức: Tư liệu, hình ảnh
 
 ## Cấu trúc
 - `index.html`: toàn bộ trang; dữ liệu nằm trong mảng `SITES`, ảnh khai báo trong `IMG`
