@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sài Thành Địa Đồ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Oswald:wght@300;400;500;600&family=Pacifico&family=Patrick+Hand&display=swap&subset=vietnamese">
+<style>
+/* Bố cục: thanh menu đỏ cố định + banner thiết kế gốc; các trang chạy như một "hành trình" dọc, ảnh không đóng khung */
+:root{
+  --brand:#98201a;       /* đỏ thanh menu (lấy từ thiết kế) */
+  --brand-deep:#6c150f;
+  --cream:#fff1d6;       /* chữ kem trên nền đỏ */
+  --bg:#f5ead6;          /* giấy */
+  --surface:#fbf4e4;
+  --fg:#2b1511;
+  --muted:#6e5248;
+  --line:#dcc6a9;
+  --accent:#a3241c;
+  --ph-bg:#3a2a24;
+  --ph-fg:#e9d6b6;
+  --paper:#efdcb2;
+  --paper-ink:#3b2616;
+  --ok:#2f6b3a; --bad:#a3241c;
+  --f-script:"Pacifico","Brush Script MT",cursive;
+  --f-ui:"Oswald","Arial Narrow",Arial,sans-serif;
+  --f-body:"Lora",Georgia,"Times New Roman",serif;
+  --f-hand:"Patrick Hand","Comic Sans MS",cursive;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#16100e;--surface:#211815;--fg:#f2e3c6;--muted:#b89f8b;--line:#3c2c26;--accent:#e2564a;
+  --ph-bg:#2b201c;--ph-fg:#cdb698;--paper:#d9c294;--paper-ink:#2e1d10;--ok:#7cc48a;--bad:#ef7468;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#16100e;--surface:#211815;--fg:#f2e3c6;--muted:#b89f8b;--line:#3c2c26;--accent:#e2564a;
+  --ph-bg:#2b201c;--ph-fg:#cdb698;--paper:#d9c294;--paper-ink:#2e1d10;--ok:#7cc48a;--bad:#ef7468;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.7;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--brand)}
+a{color:inherit}
+h1,h2,h3{line-height:1.2;text-wrap:balance;margin:0}
+p{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.label{font-family:var(--f-ui);text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--accent);font-weight:500}
+.btn{font-family:var(--f-ui);font-size:18px;letter-spacing:.02em;background:var(--brand);color:var(--cream);border:0;border-radius:14px;padding:10px 26px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 var(--brand-deep);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--brand-deep)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--brand-deep)}
+.btn.ghost{background:transparent;color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+
+/* ===== Thanh menu ===== */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--brand);color:var(--cream)}
+.nav .wrap{display:flex;align-items:center;gap:24px;min-height:84px}
+.logo{display:block;flex:none}
+.logo img{height:56px;width:auto;display:block}
+.links{flex:1;display:flex;justify-content:center;gap:clamp(18px,4vw,64px)}
+.links a{font-family:var(--f-ui);font-weight:300;font-size:clamp(18px,2vw,28px);text-decoration:none;padding:4px 2px;border-bottom:2px solid transparent;white-space:nowrap}
+.links a:hover,.links a[aria-current="page"]{border-color:var(--cream)}
+.theme{flex:none;display:flex;border:3px solid var(--cream);border-radius:14px;padding:4px;gap:4px}
+.theme button{width:44px;height:36px;border:0;border-radius:9px;background:transparent;color:var(--cream);cursor:pointer;display:grid;place-items:center}
+.theme button[aria-pressed="true"]{background:var(--cream);color:var(--brand)}
+@media (max-width:760px){
+  .nav .wrap{flex-wrap:wrap;gap:8px 12px;padding-block:8px}
+  .logo img{height:42px}
+  .links{order:3;flex-basis:100%;justify-content:flex-start;overflow-x:auto;gap:22px;padding-bottom:4px}
+  .theme{margin-left:auto}
+}
+
+/* ===== Banner trang chủ (ảnh thiết kế gốc) ===== */
+.hero{position:relative;container-type:inline-size;background:#1b1514;line-height:0}
+.hero img.art{width:100%;height:auto;display:block}
+.hero .cta{position:absolute;top:73.7%;height:10.4%;width:27.5%;border-radius:1.1cqw;font-size:2.35cqw;padding:0;justify-content:center;box-shadow:0 .3cqw 0 var(--brand-deep);background:#b0261e;color:var(--cream);line-height:1}
+.hero .cta.a{left:20.2%}.hero .cta.b{left:52.3%}
+.hero-mobile{display:none}
+@media (max-width:640px){.hero .cta{opacity:0}.hero-mobile{display:flex;gap:12px;flex-wrap:wrap;padding-block:16px;background:#1b1514}.hero-mobile .btn{flex:1;justify-content:center;font-size:16px}}
+
+/* ===== Khối chung ===== */
+section.block{padding-block:clamp(56px,8vw,96px)}
+.title-script{font-family:var(--f-script);color:var(--accent);font-weight:400;font-size:clamp(34px,5vw,56px);line-height:1.3}
+.intro-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.intro-grid p{max-width:60ch;margin-top:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--fg);border-bottom:1px solid var(--line)}
+.stats div{padding:20px 12px;border-right:1px solid var(--line)}
+.stats div:last-child{border-right:0}
+.stats b{display:block;font-family:var(--f-ui);font-size:clamp(30px,4vw,44px);font-weight:500;color:var(--accent);line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{font-family:var(--f-ui);font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:820px){.intro-grid{grid-template-columns:1fr;gap:28px}}
+
+/* Cuộn phim */
+.film{background:#120d0c;color:#f2e3c6;padding-block:56px}
+.film h2{color:#f2e3c6}
+.film .head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.film .label{color:#e9867b}
+.reel{position:relative;overflow-x:auto;scroll-snap-type:x mandatory;padding-block:26px;
+  background:
+   repeating-linear-gradient(90deg,transparent 0 10px,#f2e3c6 10px 22px,transparent 22px 34px) top 7px left/100% 12px no-repeat,
+   repeating-linear-gradient(90deg,transparent 0 10px,#f2e3c6 10px 22px,transparent 22px 34px) bottom 7px left/100% 12px no-repeat,
+   #000;
+  border-radius:4px}
+.reel-track{display:flex;gap:6px;padding-inline:6px;width:max-content}
+.frame{scroll-snap-align:start;width:280px;flex:none;text-decoration:none;color:#f2e3c6;background:#1d1513;display:block;transition:transform .2s}
+.frame:hover{transform:translateY(-4px)}
+.frame .ph{aspect-ratio:4/3}
+.frame .cap{padding:12px 14px 14px;line-height:1.35}
+.frame .yr{font-family:var(--f-ui);font-size:28px;color:#ef6a5d;font-variant-numeric:tabular-nums}
+.frame .nm{font-weight:600}
+
+/* Ảnh chờ */
+.ph{position:relative;background:
+  radial-gradient(circle at 30% 20%,rgba(255,255,255,.06),transparent 60%),
+  repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 9px),var(--ph-bg);
+  color:var(--ph-fg);display:flex;align-items:flex-end;overflow:hidden;line-height:1.4;max-width:100%}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:sepia(.15)}
+.ph .t{position:relative;font-family:var(--f-ui);font-size:13px;letter-spacing:.05em;padding:10px 12px}
+.ph .t::before{content:"ẢNH · ";color:#ef6a5d}
+.ph.has{background:var(--ph-bg)}
+.ph.has img{filter:none}
+figcaption.c{font-family:var(--f-ui);font-size:13px;color:var(--muted);margin-top:8px;letter-spacing:.03em;line-height:1.4}
+.gallery{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;margin:24px 0 8px;align-items:start}
+.gallery figure{margin:0}
+.gallery .ph{aspect-ratio:4/5}
+.gallery figure:nth-child(2){margin-top:48px}
+.gallery figure:nth-child(1) .ph{aspect-ratio:4/4.2}
+@media (max-width:640px){.gallery{grid-template-columns:1fr 1fr}.gallery figure:first-child{grid-column:1/-1}.gallery figure:nth-child(2){margin-top:0}}
+.person.noimg{grid-template-columns:1fr}
+
+/* Sứ mệnh */
+.mission{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start}
+.mission p{max-width:62ch}
+.mission ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.mission li{padding-left:28px;position:relative}
+.mission li::before{content:"";position:absolute;left:0;top:.55em;width:14px;height:14px;background:var(--accent);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+@media (max-width:820px){.mission{grid-template-columns:1fr;gap:20px}}
+
+/* Footer */
+footer{background:var(--brand);color:var(--cream);padding-block:48px 28px}
+footer .cols{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:36px}
+footer h4{font-family:var(--f-ui);font-weight:500;text-transform:uppercase;letter-spacing:.1em;font-size:14px;margin:0 0 10px;opacity:.85}
+footer p,footer li{font-size:15px;line-height:1.7}
+footer ul{list-style:none;margin:0;padding:0}
+footer a{text-decoration:none;border-bottom:1px solid rgba(255,241,214,.4)}
+footer .brand-name{font-family:var(--f-script);font-size:28px;line-height:1.3}
+footer .fill{opacity:.7;font-style:italic}
+footer .bottom{margin-top:36px;padding-top:16px;border-top:1px solid rgba(255,241,214,.3);font-family:var(--f-ui);font-size:13px;letter-spacing:.05em;opacity:.8}
+@media (max-width:820px){footer .cols{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){footer .cols{grid-template-columns:1fr}}
+
+/* ===== Trang tiêu đề chung ===== */
+.page-head{padding-block:48px 24px;border-bottom:1px solid var(--line)}
+.page-head p{max-width:62ch;color:var(--muted);margin-top:10px}
+
+/* Giới thiệu */
+.about-list{display:grid;gap:0}
+.about-item{display:grid;grid-template-columns:120px 1fr 1.1fr;gap:32px;padding-block:36px;border-bottom:1px solid var(--line);text-decoration:none;align-items:center}
+.about-item:hover h3{color:var(--accent)}
+.about-item .yr{font-family:var(--f-ui);font-size:44px;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+.about-item h3{font-size:26px;transition:color .2s}
+.about-item p{margin-top:8px;color:var(--muted);max-width:56ch}
+.about-item .ph{aspect-ratio:16/9}
+.about-item .more{font-family:var(--f-ui);color:var(--accent);margin-top:10px;display:inline-block}
+@media (max-width:820px){.about-item{grid-template-columns:1fr;gap:12px}}
+
+/* Danh sách địa điểm */
+.tools{display:grid;gap:14px;padding-block:24px}
+.search{display:flex;align-items:center;gap:10px;border:2px solid var(--fg);border-radius:12px;padding:6px 14px;background:var(--surface);max-width:620px}
+.search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;color:var(--fg);padding:6px 0;outline:none}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.filters select{font-family:var(--f-ui);font-size:15px;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;max-width:100%}
+.view-toggle{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.view-toggle button{font-family:var(--f-ui);font-size:14px;border:0;background:var(--surface);color:var(--fg);padding:8px 14px;cursor:pointer}
+.view-toggle button[aria-pressed="true"]{background:var(--brand);color:var(--cream)}
+.count{font-family:var(--f-ui);color:var(--muted);font-size:14px;letter-spacing:.04em}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px;padding-bottom:40px}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.card .ph{aspect-ratio:4/3}
+.card .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-size:20px}
+.meta{font-family:var(--f-ui);font-size:14px;color:var(--muted);letter-spacing:.02em;display:flex;flex-wrap:wrap;gap:4px 14px}
+.chip{font-family:var(--f-ui);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid currentColor;border-radius:99px;padding:1px 9px;align-self:flex-start}
+.card .btn{margin-top:auto;align-self:flex-start;font-size:15px;padding:7px 16px}
+.cards.list{grid-template-columns:1fr;gap:16px}
+.cards.list .card{flex-direction:row}
+.cards.list .card .ph{width:220px;flex:none;aspect-ratio:auto;min-height:150px}
+@media (max-width:560px){.cards.list .card{flex-direction:column}.cards.list .card .ph{width:auto;aspect-ratio:16/9}}
+.empty{padding:40px 0;color:var(--muted)}
+.pager{display:flex;justify-content:center;gap:8px;padding-bottom:56px}
+.pager button{font-family:var(--f-ui);width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.pager button[aria-current="true"]{background:var(--brand);color:var(--cream);border-color:var(--brand)}
+
+/* Bản đồ */
+.map-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:32px;padding-block:32px 64px;align-items:start}
+.map{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.map svg{display:block;width:100%;height:auto}
+.map-list{display:grid;gap:12px}
+.map-list a{display:grid;grid-template-columns:36px 1fr;gap:12px;text-decoration:none;padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.map-list a:hover,.map-list a.on{border-color:var(--accent)}
+.map-list .n{width:32px;height:32px;border-radius:50%;background:var(--brand);color:var(--cream);display:grid;place-items:center;font-family:var(--f-ui)}
+.map-list small{color:var(--muted);display:block;line-height:1.4}
+@media (max-width:860px){.map-wrap{grid-template-columns:1fr}}
+
+/* ===== Trang chi tiết ===== */
+.d-hero{position:relative}
+.d-hero .ph{aspect-ratio:21/8;min-height:260px;width:100%;align-items:flex-start}
+.d-hero .over{position:absolute;inset:auto 0 0 0;background:linear-gradient(transparent,rgba(12,8,7,.85));color:#f6e8cc;padding-block:80px 28px}
+.d-hero .over h1{font-size:clamp(30px,5vw,58px)}
+.d-hero .over .label{color:#f08a7f}
+.strip{background:var(--brand);color:var(--cream)}
+.strip dl{margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.strip dl>div{padding:16px 18px;border-right:1px solid rgba(255,241,214,.25)}
+.strip dl>div:last-child{border-right:0}
+.strip dt{font-family:var(--f-ui);text-transform:uppercase;letter-spacing:.1em;font-size:12px;opacity:.75}
+.strip dd{margin:2px 0 0;font-family:var(--f-ui);font-size:17px;line-height:1.35}
+@media (max-width:760px){.strip dl{grid-template-columns:1fr 1fr}.strip dl>div:nth-child(2){border-right:0}.strip dl>div:nth-child(-n+2){border-bottom:1px solid rgba(255,241,214,.25)}}
+
+.detail{display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px;padding-block:48px 24px}
+.route{position:sticky;top:calc(env(safe-area-inset-top,0px) + 110px);align-self:start}
+.route ol{list-style:none;margin:0;padding:0;position:relative}
+.route ol::before{content:"";position:absolute;left:9px;top:12px;bottom:12px;border-left:3px dashed var(--line)}
+.route li button{display:flex;gap:14px;align-items:center;background:none;border:0;padding:7px 0;font-family:var(--f-ui);font-size:16px;color:var(--muted);cursor:pointer;text-align:left;width:100%}
+.route .dot{width:21px;height:21px;border-radius:50%;background:var(--bg);border:3px solid var(--line);flex:none;position:relative;z-index:1;transition:all .2s}
+.route li.on button{color:var(--fg)}
+.route li.on .dot{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+.route li.done .dot{border-color:var(--accent)}
+@media (max-width:900px){
+  .detail{grid-template-columns:1fr;gap:0}
+  .route{position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px;overflow-x:auto}
+  .route ol{display:flex;gap:18px;width:max-content}
+  .route ol::before{display:none}
+  .route li button{padding:10px 0;font-size:14px;gap:6px}
+  .route .dot{width:12px;height:12px;border-width:2px}
+}
+@media (max-width:760px){.route{top:calc(env(safe-area-inset-top,0px) + 108px)}}
+
+.story section{scroll-margin-top:140px;padding-bottom:56px}
+.story h2{font-size:clamp(26px,3.4vw,36px);margin:6px 0 18px}
+.story p{max-width:64ch;margin-bottom:14px}
+.lede{font-size:clamp(19px,2vw,22px);line-height:1.65}
+.lede::first-letter{font-family:var(--f-script);float:left;font-size:72px;line-height:.9;padding:10px 12px 0 0;color:var(--accent)}
+
+.timeline{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:0;max-width:66ch}
+.timeline li{display:grid;grid-template-columns:120px 1fr;gap:20px;padding-block:14px;border-top:1px solid var(--line)}
+.timeline .when{font-family:var(--f-ui);font-size:18px;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.4}
+.timeline b{display:block}
+@media (max-width:520px){.timeline li{grid-template-columns:1fr;gap:2px}}
+
+/* Bố trí ảnh tự do */
+.bleed{margin:28px 0 30px;margin-right:calc(-1 * max(16px,(100vw - 1180px)/2 + 16px));}
+.bleed .ph{aspect-ratio:21/9;width:100%}
+.bleed figcaption,.side figcaption{font-family:var(--f-ui);font-size:13px;color:var(--muted);margin-top:8px;letter-spacing:.03em}
+.event{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:start;margin-bottom:40px}
+.event.flip{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+.event.flip{margin-bottom:84px}
+.event.flip .side{order:-1;transform:translateY(40px)}
+.event .side .ph{aspect-ratio:4/3}
+.event .when{font-family:var(--f-ui);color:var(--accent);font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+.event h3{font-size:22px;margin:4px 0 10px}
+.event.text-only{grid-template-columns:1fr}
+@media (max-width:700px){.event,.event.flip{grid-template-columns:1fr}.event.flip .side{order:0;transform:none}.event .side .ph{aspect-ratio:16/10}}
+
+.pull{font-family:var(--f-body);font-style:italic;font-size:clamp(24px,3.4vw,38px);line-height:1.35;text-align:center;max-width:24ch;margin:44px auto 52px;color:var(--accent);text-wrap:balance}
+.pull::before,.pull::after{content:"";display:block;width:60px;height:3px;background:currentColor;margin:18px auto}
+
+.paper{background:
+  radial-gradient(ellipse at 20% 10%,rgba(120,70,20,.18),transparent 55%),
+  radial-gradient(ellipse at 85% 90%,rgba(120,70,20,.22),transparent 50%),var(--paper);
+  color:var(--paper-ink);font-family:var(--f-hand);font-size:21px;line-height:1.5;padding:28px 30px 30px;max-width:520px;margin:36px 0 40px 6%;transform:rotate(-1.6deg);box-shadow:0 14px 30px rgba(0,0,0,.18)}
+.paper h4{margin:0 0 8px;font-family:var(--f-hand);font-size:26px;font-weight:400;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+
+.values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;max-width:820px;border-top:2px solid var(--fg)}
+.values div{padding:18px 20px 20px 0;border-bottom:1px solid var(--line)}
+.values div:nth-child(odd){padding-right:28px;border-right:1px solid var(--line)}
+.values div:nth-child(even){padding-left:24px}
+.values b{font-family:var(--f-ui);font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-size:14px;color:var(--accent);display:block;margin-bottom:4px}
+@media (max-width:640px){.values{grid-template-columns:1fr}.values div:nth-child(odd){border-right:0;padding-right:0}.values div:nth-child(even){padding-left:0}}
+
+.people{display:grid;gap:0;max-width:820px}
+.person{display:grid;grid-template-columns:84px 1fr;gap:20px;padding-block:20px;border-top:1px solid var(--line)}
+.person .ph{width:84px;height:104px;align-items:center;justify-content:center}
+.person .ph .t{font-size:10px;padding:4px;text-align:center}
+.person .ph .t::before{content:""}
+.person h3{font-size:20px}
+.person .role{font-family:var(--f-ui);color:var(--accent);font-size:14px;letter-spacing:.03em;margin:2px 0 6px}
+.person .warn{font-size:15px;color:var(--muted);font-style:italic}
+
+.today{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:stretch}
+.today .ph{min-height:240px;aspect-ratio:4/3}
+.today dl{margin:0;display:grid;gap:14px}
+.today dt{font-family:var(--f-ui);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--muted)}
+.today dd{margin:0}
+@media (max-width:700px){.today{grid-template-columns:1fr}}
+
+.quiz{display:grid;gap:22px;max-width:760px}
+.q{border:1px solid var(--line);border-radius:6px;padding:18px 20px;background:var(--surface)}
+.q p{font-weight:600;margin-bottom:12px}
+.q .opts{display:grid;gap:8px}
+.q button{text-align:left;font:inherit;font-size:16px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer}
+.q button:hover:not(:disabled){border-color:var(--accent)}
+.q button.right{border-color:var(--ok);color:var(--ok);font-weight:600}
+.q button.wrong{border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.q button:disabled{cursor:default}
+.q .why{margin-top:10px;font-size:15px;color:var(--muted)}
+.score{font-family:var(--f-ui);font-size:16px;color:var(--accent)}
+
+.next-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.next-grid a{text-decoration:none;display:grid;gap:8px}
+.next-grid .ph{aspect-ratio:3/2}
+.next-grid b{font-size:17px;line-height:1.35}
+.next-grid small{font-family:var(--f-ui);color:var(--muted);font-size:13px}
+.journey{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:2px solid var(--fg);padding-top:20px;margin-top:8px}
+
+/* Nguồn */
+.src-group{padding-block:28px;border-bottom:1px solid var(--line)}
+.src-group h2{font-size:24px;margin-bottom:12px}
+.src-group ol{margin:0;padding-left:22px;display:grid;gap:8px;max-width:80ch}
+.src-group a{color:var(--accent);word-break:break-word}
+.src-group .sub{font-family:var(--f-ui);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
+.pledge{border-left:4px solid var(--accent);padding:4px 0 4px 18px;margin-top:20px;max-width:64ch}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* ---- Nhân vật tiêu biểu (.vip) ---- */
+.vip{position:relative;overflow:hidden;min-height:360px;margin:28px 0 12px;background:var(--brand);border:1px solid #fff1d655;color:var(--cream);display:flex;align-items:center}
+.vip-bg{position:absolute;left:0;bottom:0;width:80%;height:50%;background:center/cover;filter:grayscale(1) contrast(1.5);mix-blend-mode:multiply;opacity:.6;-webkit-mask-image:linear-gradient(to right,#000 55%,transparent);mask-image:linear-gradient(to right,#000 55%,transparent)}
+.vip-t{position:relative;z-index:2;max-width:58%;padding:40px 0 40px 44px}
+.vip-t .label,.vip-t .role{color:#f1d79a}
+.vip-t h3{font-size:clamp(28px,4vw,46px);margin:6px 0 4px}
+.vip-t p{margin:6px 0 0}
+.vip-t .warn{font-size:15px;font-style:italic;opacity:.85}
+.vip-img{position:absolute;right:0;bottom:0;height:96%;max-width:44%;object-fit:contain;object-position:right bottom;filter:drop-shadow(-6px 0 18px #0004)}
+.vip-img.framed{height:auto;width:min(34%,250px);aspect-ratio:3/4;object-fit:cover;right:36px;bottom:30px;border:6px solid #fff;box-shadow:0 14px 30px #0006;transform:rotate(1.5deg)}
+@media(max-width:760px){.vip{display:block;min-height:0;padding-bottom:min(66vw,290px)}.vip-t{max-width:100%;padding:28px 22px 0}.vip-img{height:min(66vw,290px);max-width:70%}.vip-img.framed{height:auto;width:min(42vw,170px);right:18px;bottom:18px}}
+</style>
+</head>
+<body>
+
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#trang-chu" aria-label="Sài Thành Địa Đồ – về trang chủ"><img src="logo.png" alt=""></a>
+    <nav class="links" aria-label="Điều hướng chính">
+      <a href="#trang-chu" data-r="trang-chu">Trang chủ</a>
+      <a href="#gioi-thieu" data-r="gioi-thieu">Giới thiệu</a>
+      <a href="#dia-diem" data-r="dia-diem">Địa điểm</a>
+      <a href="#nguon" data-r="nguon">Nguồn tham khảo</a>
+    </nav>
+    <div class="theme" role="group" aria-label="Chế độ sáng/tối">
+      <button id="t-light" aria-pressed="false" title="Nền sáng"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+      <button id="t-dark" aria-pressed="false" title="Nền tối"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3a9 9 0 1 0 6 15.5A8 8 0 0 1 15 3z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><img src="logo.png" alt="" width="72"></div>
+      <div>
+        <p class="brand-name">Sài Thành Địa Đồ</p>
+        <p>Dấu chân đỏ thuở cách mạng. Dự án môn Lịch sử: <i>Khắc dấu rạng đông</i>.</p>
+      </div>
+      <div>
+        <h4>Nhóm thực hiện</h4>
+        <ul>
+          <li>Trân, Minh · lập trình</li>
+          <li>Nam, Khang · ý tưởng</li>
+          <li>Di · thiết kế giao diện</li>
+          <li>Đức, Mon · tư liệu, hình ảnh</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Trường · Lớp · Liên hệ</h4>
+        <p>Trường THPT Lê Quý Đôn</p>
+        <p>Lớp 11A2 · Năm học 2026–2027</p>
+        <p style="word-break:break-all">Email: <span style="user-select:all">tintrannie14062010@gmail.com</span></p>
+        <p style="margin-top:8px"><a href="#dia-diem">Địa điểm</a> · <a href="#ban-do">Bản đồ</a> · <a href="#nguon">Nguồn</a></p>
+      </div>
+    </div>
+    <div class="bottom">Nội dung do nhóm tự biên soạn, có ghi rõ nguồn tham khảo. Không sao chép nguyên văn bài báo hay công trình nghiên cứu.</div>
+  </div>
+</footer>
+
+<script>
+/* ======================================================================
+   ẢNH: điền đường dẫn ảnh vào đây (vd. "img/dinh-kham-sai.jpg").
+   Ô nào để trống sẽ hiện khung chờ có ghi chú nội dung ảnh cần tìm.
+   ====================================================================== */
+const IMG = {
+  /* khóa: [đường dẫn, chú thích, vị trí cắt ảnh] */
+  "dinh-kham-sai-cover":["img/dinh-kham-sai-bao-tang.jpg","Bảo tàng TP. Hồ Chí Minh, Dinh Khâm Sai xưa","center 40%"],
+  "dinh-kham-sai-wide":["img/dinh-kham-sai-xua.jpg","Tòa nhà thời Pháp thuộc, nay là Bảo tàng TP. Hồ Chí Minh","center 55%"],
+  "dinh-kham-sai-ev1":["img/thang-tam-1945.jpg","Quần chúng Sài Gòn trong những ngày Tháng Tám 1945","center"],
+  "dinh-kham-sai-now":["img/bao-tang-trung-bay.jpg","Không gian trưng bày trong bảo tàng hôm nay","center"],
+  "dinh-kham-sai-p0":["img/nguyen-van-sam-sach.jpg","Sách của Nguyễn Văn Sâm","center"],
+  "dinh-kham-sai-p1":["img/pham-ngoc-thach.jpg","Phạm Ngọc Thạch","center 20%"],
+  "dinh-kham-sai-p2":["img/tran-van-giau.jpg","Trần Văn Giàu","40% 20%"],
+  "dinh-kham-sai-starbg":["img/thang-tam-1945.jpg","Quần chúng Sài Gòn tháng 8/1945","center"],
+  "dinh-kham-sai-p3":["img/dinh-kham-sai-xua.jpg","Công trình do Foulhoux thiết kế","center"],
+
+  "nga-ba-giong-cover":["img/nga-ba-giong-toan-canh.jpg","Toàn cảnh Khu tưởng niệm Ngã Ba Giồng","center 55%"],
+  "nga-ba-giong-ev0":["img/nam-ky-khoi-nghia.jpg","Tư liệu về cuộc Khởi nghĩa Nam Kỳ 1940","center"],
+  "nga-ba-giong-ev2":["img/nga-ba-giong-dang-huong.jpg","Dâng hương tại bia Nam Kỳ khởi nghĩa","center"],
+  "nga-ba-giong-starbg":["img/nam-ky-khoi-nghia.jpg","Tư liệu Khởi nghĩa Nam Kỳ 1940","center"],
+  "nga-ba-giong-now":["img/nga-ba-giong-cong.jpg","Cổng Khu tưởng niệm Liệt sĩ Ngã Ba Giồng","center"],
+
+  "com-tam-dai-han-cover":["img/com-tam-noi-that.jpg","Hiện vật trưng bày trong quán","center 45%"],
+  "com-tam-dai-han-wide":["img/com-tam-mat-tien.jpg","Mặt tiền 113A Đặng Dung với bảng hiệu cũ","center 30%"],
+  "com-tam-dai-han-ev1":["img/biet-dong-ban-do.jpg","Chiến sĩ Biệt động nghiên cứu sơ đồ trước trận đánh","center"],
+  "com-tam-dai-han-starbg":["img/biet-dong-ban-do.jpg","Chiến sĩ Biệt động nghiên cứu sơ đồ","center"],
+  "com-tam-dai-han-now":["img/com-tam-mat-tien.jpg","Quán Đỗ Phủ – Đại Hàn hôm nay","center"],
+
+  "dia-dao-phu-tho-hoa-cover":["img/dia-dao-ham.jpg","Đường hầm địa đạo Phú Thọ Hòa","center 60%"],
+  "dia-dao-phu-tho-hoa-wide":["img/dia-dao-trong-ham.jpg","Bên trong lòng địa đạo, cao chừng một mét","center 45%"],
+  "dia-dao-phu-tho-hoa-ev0":["img/dia-dao-mieng-ham.jpg","Miệng hầm vuông dẫn xuống địa đạo","center"],
+  "dia-dao-phu-tho-hoa-ev1":["img/sai-gon-1968-tren-khong.jpg","Ảnh chụp Sài Gòn từ trên không (tư liệu 1968)","center"],
+  "dia-dao-phu-tho-hoa-ev2":["img/may-bay-thoi-phap.jpg","Máy bay và sân bay thời Pháp thuộc","center"],
+  "dia-dao-phu-tho-hoa-starbg":["img/dia-dao-trong-ham.jpg","Lòng địa đạo","center"],
+  "dia-dao-phu-tho-hoa-now":["img/dia-dao-cong.jpg","Cổng khu di tích Địa đạo Phú Thọ Hòa","center"],
+  "dia-dao-phu-tho-hoa-g0":["img/dia-dao-bo-ham.jpg","Lối đi hẹp phải cúi người","center"],
+  "dia-dao-phu-tho-hoa-g1":["img/dia-dao-duong-ham.jpg","Đường hầm có đèn dọc lối","center"],
+  "dia-dao-phu-tho-hoa-g2":["img/dia-dao-choi-tranh.jpg","Chòi tranh che lối xuống hầm","center 70%"]
+};
+
+const SITES = [
+{
+  id:"dinh-kham-sai", star:1, starText:"", name:"Dinh Khâm Sai", sub:"Bảo tàng TP. Hồ Chí Minh ngày nay",
+  year:1885, yearLabel:"1885–1890", period:"Cách mạng Tháng Tám", area:"Trung tâm", type:"Công trình kiến trúc",
+  rank:"Di tích kiến trúc nghệ thuật quốc gia (2012)",
+  addr:"65 Lý Tự Trọng, phường Sài Gòn (Quận 1 cũ)", hours:"Xem giờ mở cửa và giá vé trên kênh chính thức của bảo tàng trước khi đến.",
+  lat:10.7761, lng:106.6997,
+  summary:"Tòa nhà kiến trúc Pháp cuối thế kỷ XIX, nơi lực lượng cách mạng chiếm giữ trong đêm 24/8/1945 và kéo lá cờ đỏ sao vàng giữa trung tâm Sài Gòn.",
+  story:"Đêm 24/8/1945, các thanh niên của Tráng đoàn Lê Lai tiến vào tòa dinh thự lớn nhất trung tâm Sài Gòn. Họ bắt giữ Khâm sai đại thần Nguyễn Văn Sâm, hạ lá cờ quẻ ly và kéo lên lá cờ đỏ sao vàng. Sáng hôm sau, hàng trăm nghìn người đổ về trung tâm thành phố, và cuộc Tổng khởi nghĩa ở Sài Gòn giành thắng lợi.",
+  context:["Tòa nhà được khởi công năm 1885 và hoàn thành năm 1890 theo thiết kế của kiến trúc sư người Pháp Alfred Foulhoux. Ban đầu công trình được dự định làm bảo tàng thương mại, sau đó trở thành dinh thự của Thống đốc Nam Kỳ.",
+           "Sau khi Nhật đảo chính Pháp ngày 9/3/1945, tòa nhà lần lượt được Thống đốc Nhật sử dụng, rồi giao cho chính quyền Trần Trọng Kim. Từ đây nó mang tên Dinh Khâm Sai, nơi làm việc của Khâm sai đại thần Nam Bộ Nguyễn Văn Sâm."],
+  timeline:[["1885","Khởi công","Công trình bắt đầu xây theo thiết kế của Alfred Foulhoux."],
+            ["1890","Hoàn thành","Dự định làm bảo tàng thương mại, sau dùng làm dinh Thống đốc Nam Kỳ."],
+            ["9/3/1945","Nhật đảo chính Pháp","Tòa nhà chuyển qua tay Thống đốc Nhật, rồi chính quyền Trần Trọng Kim."],
+            ["24/8/1945","Chiếm Dinh Khâm Sai","Thanh niên Tiền phong bắt giữ Nguyễn Văn Sâm, kéo cờ đỏ sao vàng."],
+            ["25/8/1945","Tổng khởi nghĩa","Sài Gòn – Chợ Lớn – Gia Định giành chính quyền."],
+            ["2012","Di tích quốc gia","Được xếp hạng Di tích kiến trúc nghệ thuật cấp quốc gia."]],
+  events:[
+    {when:"Đêm 24/8/1945",title:"Chiếm Dinh Khâm Sai",text:"Tráng đoàn Lê Lai thuộc lực lượng Thanh niên Tiền phong tiến vào dinh, bắt giữ Nguyễn Văn Sâm và kéo cờ đỏ sao vàng. Đây là một dấu mốc trong quá trình lực lượng cách mạng giành quyền kiểm soát các cơ quan chính quyền ở Sài Gòn.",img:"Tư liệu về đêm 24/8/1945 tại Dinh Khâm Sai"},
+    {when:"25/8/1945",title:"Tổng khởi nghĩa giành chính quyền",text:"Hàng vạn, rồi hàng trăm nghìn người dân từ Sài Gòn – Chợ Lớn – Gia Định và các tỉnh lân cận tập trung về trung tâm thành phố. Cuộc khởi nghĩa thắng lợi, mở ra một giai đoạn mới trong lịch sử Sài Gòn.",img:"Ảnh quần chúng mít tinh tháng 8/1945"},
+    {when:"Sau khởi nghĩa",title:"Trụ sở chính quyền cách mạng",text:"Dinh Khâm Sai trở thành trụ sở Ủy ban Hành chính lâm thời Nam Bộ, đánh dấu sự chuyển giao quyền kiểm soát một cơ quan hành chính quan trọng bậc nhất của Sài Gòn.",img:""}],
+  quote:"Chỉ trong một đêm, lá cờ trên nóc tòa dinh thự giữa Sài Gòn đã đổi màu.",
+  note:{title:"Ghi chép · tháng 8/1945",text:"Đêm 24: Tráng đoàn Lê Lai vào dinh. Bắt Khâm sai Nguyễn Văn Sâm. Hạ cờ quẻ ly – kéo cờ đỏ sao vàng. Sáng 25: dân Sài Gòn – Chợ Lớn – Gia Định đổ về trung tâm."},
+  values:[["Lịch sử","Gắn với sự kiện giành chính quyền tại Sài Gòn trong Cách mạng Tháng Tám năm 1945."],["Kiến trúc","Công trình kiến trúc Pháp cuối thế kỷ XIX, được công nhận là Di tích kiến trúc nghệ thuật cấp quốc gia."],["Văn hóa","Bảo tàng lưu giữ nhiều tư liệu, hiện vật về lịch sử, văn hóa và quá trình phát triển của thành phố."],["Giáo dục","Giúp thế hệ trẻ hiểu về Cách mạng Tháng Tám, sự chuyển giao chính quyền và lịch sử đô thị Sài Gòn."]],
+  legacy:["Ngày nay tòa nhà là Bảo tàng Thành phố Hồ Chí Minh, giới thiệu lịch sử hình thành, phát triển, văn hóa và đời sống của Sài Gòn – TP.HCM. Năm 2012, công trình được xếp hạng Di tích kiến trúc nghệ thuật cấp quốc gia."],
+  people:[["Nguyễn Văn Sâm","Khâm sai đại thần Nam Bộ","Làm việc tại Dinh Khâm Sai trong thời gian ngắn dưới chính quyền Trần Trọng Kim; bị lực lượng khởi nghĩa bắt giữ đêm 24/8/1945.",""],
+          ["Phạm Ngọc Thạch","Thủ lĩnh Thanh niên Tiền phong","Bác sĩ, nhà cách mạng. Thanh niên Tiền phong do ông đứng đầu là lực lượng tham gia chiếm giữ Dinh Khâm Sai và tập hợp quần chúng Sài Gòn năm 1945.",""],
+          ["Trần Văn Giàu","Lãnh đạo phong trào giành chính quyền ở Nam Bộ","Tham gia chỉ đạo quá trình chuẩn bị và tổ chức khởi nghĩa tại Sài Gòn – Gia Định trong Cách mạng Tháng Tám.",""],
+          ["Alfred Foulhoux","Kiến trúc sư","Người Pháp thiết kế tòa nhà xây từ 1885 đến 1890, một ví dụ tiêu biểu của kiến trúc thời Pháp thuộc ở trung tâm Sài Gòn.",""]],
+  quiz:[["Ai là kiến trúc sư thiết kế tòa nhà?",["Alfred Foulhoux","Gustave Eiffel","Paul Doumer"],0,"Alfred Foulhoux thiết kế công trình, xây từ 1885 đến 1890."],
+        ["Lực lượng cách mạng chiếm Dinh Khâm Sai vào đêm nào?",["2/9/1945","24/8/1945","19/8/1945"],1,"Đêm 24/8/1945, một ngày trước Tổng khởi nghĩa ở Sài Gòn."],
+        ["Lực lượng nào trực tiếp tiến vào chiếm dinh?",["Tiểu đoàn Ký Con","Biệt động Sài Gòn","Tráng đoàn Lê Lai (Thanh niên Tiền phong)"],2,"Tráng đoàn Lê Lai thuộc Thanh niên Tiền phong."]],
+  sources:[["Sở Văn hóa và Thể thao TP.HCM – Cách mạng Tháng Tám năm 1945 tại Sài Gòn – Chợ Lớn – Gia Định","https://svhtt.hochiminhcity.gov.vn/tin-chi-tiet/-/chi-tiet/cach-mang-thang-tam-nam-1945-tai-sai-gon-cho-lon-gia-%C4%91inh-23496-1.html"],
+           ["Hội đồng nhân dân TP.HCM – Theo dấu khởi nghĩa Cách mạng Tháng Tám giữa lòng TP.HCM","https://hdnd.vn/tin-tuc/tin-tong-hop/theo-dau-khoi-nghia-cach-mang-thang-tam-giua-long-tp-hcm"],
+           ["Bảo tàng Thành phố Hồ Chí Minh – Trang thông tin chính thức","https://hcmc-museum.edu.vn/"]],
+  imgSources:[]
+},
+{
+  id:"nga-ba-giong", star:0, starText:"", name:"Ngã Ba Giồng", sub:"Khu tưởng niệm Liệt sĩ Ngã Ba Giồng",
+  year:1940, yearLabel:"1940–1941", period:"Thời Pháp thuộc", area:"Phía Bắc", type:"Khu tưởng niệm",
+  rank:"Di tích lịch sử quốc gia (2002)",
+  addr:"Đường Phan Văn Hớn, khu vực Bà Điểm (Hóc Môn cũ)", hours:"Khoảng 7:30–17:00. Nên xác nhận trước khi đến.",
+  lat:10.8655, lng:106.5745,
+  summary:"Trường bắn của thực dân Pháp sau cuộc Khởi nghĩa Nam Kỳ 1940, nơi Tổng Bí thư Nguyễn Văn Cừ và đồng chí Phan Đăng Lưu hy sinh.",
+  story:"Ngày 28/8/1941, tại một ngã ba giữa vùng 18 thôn Vườn Trầu, thực dân Pháp xử bắn Nguyễn Văn Cừ, Tổng Bí thư Đảng Cộng sản Đông Dương giai đoạn 1938–1940. Cùng hy sinh với ông là Phan Đăng Lưu. Vùng đất cao từng có nhiều cây bằng lăng ấy về sau trở thành nơi người dân Hóc Môn tưởng nhớ những người đã ngã xuống.",
+  context:["Ngã Ba Giồng còn có tên Ngã Ba Giồng Bằng Lăng. Tên gọi dân gian bắt nguồn từ vùng đất giồng tương đối cao, xưa có nhiều cây bằng lăng.",
+           "Nơi đây thuộc vùng 18 thôn Vườn Trầu (Hóc Môn – Bà Điểm), vùng nông thôn có truyền thống trồng trầu và tham gia các phong trào yêu nước, sớm trở thành địa bàn quan trọng của phong trào cách mạng ở Nam Bộ."],
+  timeline:[["Trước 1940","18 thôn Vườn Trầu","Vùng quê trồng trầu, giàu truyền thống yêu nước."],
+            ["23/11/1940","Khởi nghĩa Nam Kỳ","Hóc Môn là một trong những địa bàn nổi bật của cuộc khởi nghĩa."],
+            ["1940–1941","Trường bắn","Sau khi khởi nghĩa thất bại, Pháp lập trường bắn tại đây để xử tử chiến sĩ cách mạng."],
+            ["28/8/1941","Hy sinh","Nguyễn Văn Cừ và Phan Đăng Lưu bị xử bắn tại Ngã Ba Giồng."],
+            ["30/12/2002","Di tích quốc gia","Được công nhận là di tích lịch sử cấp quốc gia."],
+            ["22/4/2025","Dâng hương","Chủ tịch nước Lương Cường dâng hương nhân 50 năm Ngày Giải phóng miền Nam."]],
+  events:[
+    {when:"23/11/1940",title:"Khởi nghĩa Nam Kỳ",text:"Cuộc khởi nghĩa bùng nổ ở nhiều địa phương Nam Bộ. Tại Hóc Môn, nhân dân 18 thôn Vườn Trầu cùng lực lượng cách mạng tiến công các cơ quan của chính quyền thực dân. Khởi nghĩa thất bại nhưng để lại dấu ấn sâu sắc trong lịch sử đấu tranh giành độc lập của Nam Bộ.",img:"Tư liệu Khởi nghĩa Nam Kỳ 1940"},
+    {when:"1940–1941",title:"Từ ngã ba thành trường bắn",text:"Sau thất bại của khởi nghĩa, thực dân Pháp tăng cường đàn áp. Ngã Ba Giồng trở thành một trong những trường bắn được lập ở Hóc Môn để xử tử chiến sĩ cách mạng và người yêu nước.",img:""},
+    {when:"Hằng năm",title:"Tưởng niệm và tri ân",text:"Khu di tích là nơi tổ chức dâng hương, tưởng niệm và giáo dục truyền thống. Ngày 22/4/2025, Chủ tịch nước Lương Cường cùng đoàn đại biểu đến dâng hương nhân kỷ niệm 50 năm Ngày Giải phóng miền Nam, thống nhất đất nước.",img:"Lễ dâng hương tại Khu tưởng niệm Ngã Ba Giồng"}],
+  quote:"Một ngã ba giữa vườn trầu đã trở thành nơi khắc tên những người ngã xuống năm 1941.",
+  note:{title:"Phân biệt cho đúng",text:"Ngày 28/8/1941 có nhiều chiến sĩ bị xử bắn ở Hóc Môn. Nguyễn Văn Cừ, Phan Đăng Lưu: tại Ngã Ba Giồng. Nguyễn Thị Minh Khai, Hà Huy Tập, Võ Văn Tần: tại trường bắn Nhà thương Giếng Nước."},
+  values:[["Lịch sử","Chứng tích về cuộc Khởi nghĩa Nam Kỳ và sự đàn áp của thực dân Pháp với phong trào cách mạng ở Nam Bộ."],["Tưởng niệm","Ghi nhớ sự hy sinh của Nguyễn Văn Cừ, Phan Đăng Lưu cùng nhiều cán bộ, chiến sĩ và đồng bào yêu nước."],["Giáo dục","Giúp thế hệ trẻ hiểu về lịch sử giành độc lập và tinh thần kiên cường của người dân Hóc Môn."],["Địa phương","Một địa điểm tiêu biểu khi tìm hiểu lịch sử vùng 18 thôn Vườn Trầu – Hóc Môn, Bà Điểm."]],
+  legacy:["Ngày 30/12/2002, Ngã Ba Giồng được công nhận là di tích lịch sử cấp quốc gia. Khu tưởng niệm hiện là nơi dâng hương, tri ân liệt sĩ, tham quan và giáo dục truyền thống cho học sinh, sinh viên."],
+  people:[["Nguyễn Văn Cừ","Tổng Bí thư Đảng Cộng sản Đông Dương (1938–1940)","Giữ vai trò quan trọng trong lãnh đạo và xây dựng đường lối cách mạng. Bị thực dân Pháp xử bắn tại Ngã Ba Giồng ngày 28/8/1941.",""],
+          ["Phan Đăng Lưu","Cán bộ lãnh đạo Đảng Cộng sản Đông Dương","Từng hoạt động báo chí và vận động cách mạng; bị bắt khi phong trào bị đàn áp. Hy sinh tại Ngã Ba Giồng ngày 28/8/1941.",""],
+          ["Nguyễn Thị Minh Khai","Bí thư Thành ủy Sài Gòn – Chợ Lớn","Bị xử bắn ngày 28/8/1941 ở Hóc Môn.","Hy sinh tại trường bắn Nhà thương Giếng Nước, không phải Ngã Ba Giồng."],
+          ["Hà Huy Tập","Tổng Bí thư Đảng Cộng sản Đông Dương (1936–1938)","Bị xử bắn ngày 28/8/1941 ở Hóc Môn.","Hy sinh tại trường bắn Nhà thương Giếng Nước, không phải Ngã Ba Giồng."],
+          ["Võ Văn Tần","Bí thư Xứ ủy Nam Kỳ","Giữ vai trò quan trọng trong phong trào cách mạng Nam Bộ; bị xử bắn ngày 28/8/1941.","Hy sinh tại trường bắn Nhà thương Giếng Nước."]],
+  quiz:[["Khởi nghĩa Nam Kỳ bùng nổ vào ngày nào?",["23/11/1940","19/8/1945","28/8/1941"],0,"Khởi nghĩa Nam Kỳ nổ ra ngày 23/11/1940."],
+        ["Ai bị thực dân Pháp xử bắn tại Ngã Ba Giồng ngày 28/8/1941?",["Hà Huy Tập","Nguyễn Văn Cừ","Võ Văn Tần"],1,"Nguyễn Văn Cừ và Phan Đăng Lưu hy sinh tại Ngã Ba Giồng."],
+        ["Tên gọi “Giồng” chỉ điều gì?",["Một con sông nhỏ","Tên một vị quan","Vùng đất cao, xưa nhiều cây bằng lăng"],2,"Giồng là vùng đất tương đối cao; nơi đây xưa có nhiều cây bằng lăng."]],
+  sources:[["Tạp chí Khoa học xã hội TP.HCM – Ngã Ba Giồng, di tích lịch sử gắn với cuộc Khởi nghĩa Nam Kỳ","https://tapchikhxhhcm.org.vn/index.php/tapchikhxh/article/view/528"],
+           ["Cổng thông tin Đảng bộ TP.HCM – Giới thiệu huyện Hóc Môn","https://www.hcmcpv.org.vn/van-ban/van-kien-tu-lieu/gioi-thieu-huyen-hoc-mon-1491378712"],
+           ["Báo Pháp Luật Việt Nam – Chủ tịch nước Lương Cường dâng hương tại Khu Di tích lịch sử Quốc gia Ngã Ba Giồng","https://baophapluat.vn/chu-tich-nuoc-luong-cuong-dang-huong-tai-khu-di-tich-lich-su-quoc-gia-nga-ba-giong-post546174.html"]],
+  imgSources:[["Meey Map – Ngã Ba Giồng","https://meeymap.com/tin-tuc/nga-ba-giong"],["Tuổi Trẻ – Tour Hóc Môn","https://tuoitre.vn/dulichtphcm/tour-hoc-mon-doc-la-gan-nha-ket-hop-thuy-bo-qua-xa-da-10722647.htm"],["Cổng TTĐT TP.HCM – Kỷ niệm 82 năm Nam Kỳ khởi nghĩa","https://tphcm.chinhphu.vn/to-chuc-nhieu-hoat-dong-y-nghia-nhan-ky-niem-82-nam-ngay-nam-ky-khoi-nghia-101221111145753985.htm"],["SGGP – Kỷ niệm 82 năm Nam Kỳ khởi nghĩa","https://www.sggp.org.vn/ky-niem-82-nam-ngay-nam-ky-khoi-nghia-23-11-1940-23-11-2022-diem-son-trong-lich-su-dan-toc-post659800.html"]]
+},
+{
+  id:"com-tam-dai-han", star:0, starText:"", name:"Cà phê Đỗ Phủ – Cơm tấm Đại Hàn", sub:"Cơ sở bí mật của Biệt động Sài Gòn – Gia Định",
+  year:1946, yearLabel:"1946", period:"Kháng chiến chống Mỹ", area:"Trung tâm", type:"Cơ sở bí mật",
+  rank:"Đề xuất tên gọi di tích (11/2025)",
+  addr:"113A Đặng Dung, phường Tân Định (Quận 1 cũ)", hours:"Khoảng 7:00–22:00 hằng ngày. Nên xác nhận trước khi đến.",
+  lat:10.7909, lng:106.6884,
+  summary:"Quán cơm tấm, cà phê lâu đời từng là nơi liên lạc, cất giấu tài liệu của Biệt động Sài Gòn, ngay sát nhà một vị tướng Việt Nam Cộng hòa.",
+  story:"Trước khi về Sài Gòn mở quán, bà Nguyễn Thị Sự từng được giao hoạt động tình báo ở Nam Vang (Phnom Penh ngày nay). Ở căn nhà 113A Đặng Dung, bà cùng chồng là ông Đỗ Miễn bán cà phê và cơm tấm cho khách qua lại. Phía sau những đĩa cơm bình dân là hầm bí mật, hộp thư bí mật và lối thoát hiểm của Biệt động Sài Gòn.",
+  context:["Căn nhà được xây dựng năm 1946, do vợ chồng ông Đỗ Miễn và bà Nguyễn Thị Sự quản lý, kinh doanh. Quán bán cà phê, cơm tấm để tạo vỏ bọc cho hoạt động cách mạng.",
+           "Địa điểm được dùng làm nơi liên lạc, chuyển giao thư từ, tài liệu, phục vụ lực lượng Biệt động Sài Gòn. Nhà của tướng Ngô Quang Trưởng nằm ngay sát bên, khiến việc giữ cơ sở đòi hỏi sự kín đáo đặc biệt."],
+  timeline:[["1946","Xây nhà","Vợ chồng ông Đỗ Miễn, bà Nguyễn Thị Sự quản lý và kinh doanh."],
+            ["Trước 1964","Quán cơm thành cơ sở","Bán cà phê, cơm tấm làm vỏ bọc cho việc liên lạc, chuyển tài liệu."],
+            ["1964–1968","Mạng lưới Biệt động","Nơi hội họp, liên lạc, chuyển tài liệu và tiền; có hầm nổi, hộp thư bí mật, lối thoát hiểm."],
+            ["Xuân 1968","Mậu Thân","Một mắt xích trong công tác chuẩn bị, hỗ trợ đợt Tổng tiến công và nổi dậy."],
+            ["2017","Mở cửa trở lại","Vừa bán cà phê, cơm tấm vừa giới thiệu hầm bí mật và hiện vật."],
+            ["11/2025","Đề xuất tên gọi di tích","Tọa đàm khoa học thống nhất đề xuất tên gọi di tích."]],
+  events:[
+    {when:"Từ trước 1964",title:"Xây cơ sở bí mật trong lòng Sài Gòn",text:"Vợ chồng ông Đỗ Miễn và bà Nguyễn Thị Sự dùng việc buôn bán làm vỏ bọc để liên lạc, cất giữ và chuyển giao tài liệu. Vì nằm sát nhà tướng Ngô Quang Trưởng, cơ sở phải hoạt động hết sức thận trọng.",img:"Căn nhà 113A Đặng Dung"},
+    {when:"Xuân Mậu Thân 1968",title:"Một mắt xích của Tổng tiến công",text:"Cơ sở 113A Đặng Dung nằm trong mạng lưới của Biệt động Sài Gòn, gắn với công tác chuẩn bị và hỗ trợ đợt Tổng tiến công và nổi dậy Xuân Mậu Thân 1968. Đây là nơi hậu thuẫn, không phải nơi trực tiếp diễn ra một trận đánh cụ thể.",img:"Tư liệu lực lượng Biệt động Sài Gòn"},
+    {when:"Sau chiến tranh",title:"Bảo tồn và phục dựng",text:"Các hầm bí mật, lối thoát hiểm và hiện vật được phục hồi để giới thiệu với công chúng, giúp thế hệ trẻ hình dung cách lực lượng biệt động xây mạng lưới bí mật ngay trong đô thị.",img:""}],
+  quote:"Phía sau những đĩa cơm tấm bình dân là hầm bí mật của Biệt động Sài Gòn.",
+  note:{title:"Hộp thư bí mật",text:"Thư từ, tài liệu, tiền bạc được chuyển qua những hộp thư giấu trong nhà. Khi có động, người trong cơ sở xuống hầm nổi hoặc theo lối thoát hiểm ra ngoài."},
+  values:[["Lịch sử","Ghi dấu hoạt động của mạng lưới Biệt động Sài Gòn – Gia Định trong kháng chiến."],["Kiến trúc & tư liệu","Căn nhà cổ, hầm bí mật, hộp thư và hiện vật tái hiện hoạt động bí mật trong lòng đô thị."],["Giáo dục","Cho thấy sự mưu trí, kiên trì và vai trò của các cơ sở cách mạng trong lịch sử TP.HCM."],["Văn hóa","Kết hợp ẩm thực Sài Gòn xưa với tìm hiểu lịch sử, tạo nên một không gian trải nghiệm đặc biệt."]],
+  legacy:["Quán mở lại năm 2017, tiếp tục bán cà phê và cơm tấm, đồng thời giới thiệu hầm bí mật, vật dụng và câu chuyện về Biệt động Sài Gòn.",
+          "Tháng 11/2025, một buổi tọa đàm khoa học thống nhất đề xuất tên gọi di tích là “Quán cà phê Đỗ Phủ – cơm tấm Đại Hàn, cơ sở bí mật của Biệt động Sài Gòn – Gia Định”."],
+  people:[["Trần Văn Lai (Năm Lai, Mai Hồng Quế)","Người tổ chức, quản lý mạng lưới cơ sở bí mật","Chiến sĩ Biệt động Sài Gòn, Anh hùng Lực lượng vũ trang nhân dân. Căn nhà 113A Đặng Dung là một trong những cơ sở thuộc mạng lưới do ông tổ chức.",""],
+          ["Đỗ Miễn","Chủ cơ sở","Cùng vợ dùng việc buôn bán làm vỏ bọc, phối hợp với ông Trần Văn Lai xây dựng cơ sở bí mật.",""],
+          ["Nguyễn Thị Sự","Người duy trì cơ sở","Cùng chồng vận hành quán ăn. Theo báo chí, bà từng hoạt động tình báo ở Nam Vang trước khi về Sài Gòn.",""],
+          ["Ngô Quang Trưởng","Tướng Quân lực Việt Nam Cộng hòa","Nhà ông nằm sát căn nhà 113A Đặng Dung, tạo nên bối cảnh đặc biệt cho cơ sở.","Không phải thành viên của mạng lưới cách mạng tại đây."],
+          ["Trần Vũ Bình","Người kế tục công việc bảo tồn","Con trai ông Trần Văn Lai, dành nhiều công sức tìm kiếm, phục dựng các căn cứ và hiện vật của Biệt động Sài Gòn, trong đó có quán này.",""]],
+  quiz:[["Căn nhà 113A Đặng Dung được xây dựng năm nào?",["1946","1964","1968"],0,"Căn nhà được xây năm 1946."],
+        ["Quán là cơ sở bí mật của lực lượng nào?",["Thanh niên Tiền phong","Biệt động Sài Gòn – Gia Định","Tiểu đoàn Ngô Gia Tự"],1,"Đây là cơ sở của Biệt động Sài Gòn – Gia Định."],
+        ["Điều gì khiến cơ sở phải giữ kín đáo đặc biệt?",["Nằm cạnh đồn cảnh sát","Nằm trong chợ","Nằm sát nhà tướng Ngô Quang Trưởng"],2,"Nhà tướng Ngô Quang Trưởng nằm ngay sát căn nhà."]],
+  sources:[["VnExpress – Bí ẩn đằng sau quán cơm tấm hơn nửa thế kỷ ở Sài Gòn","https://vnexpress.net/bi-an-dang-sau-quan-com-tam-hon-nua-the-ky-o-sai-gon-4261478.html"],
+           ["Tuổi Trẻ – Quán cà phê Đỗ Phủ, cơm tấm Đại Hàn: Cơ sở bí mật của Biệt động Sài Gòn – Gia Định","https://tuoitre.vn/quan-ca-phe-do-phu-com-tam-dai-han-co-so-bi-mat-cua-biet-dong-sai-gon-gia-dinh-20251114152645266.htm"],
+           ["Dân trí – Bí ẩn quán cơm tấm ở TP.HCM có căn hầm ngay trong tủ áo","https://dantri.com.vn/du-lich/bi-an-quan-com-tam-o-tphcm-co-can-ham-ngay-trong-tu-ao-20250501061814441.htm"]],
+  imgSources:[["Vietnam.vn – Tour lịch sử tại TP.HCM","https://www.vietnam.vn/en/tour-lich-su-bung-no-du-khach-den-tp-ho-chi-minh-dong-chua-tung-co"],["QĐND – Lực lượng đặc công biệt động tác chiến trong thành phố","https://www.qdnd.vn/quoc-phong-an-ninh/nghe-thuat-quan-su-vn/luc-luong-dac-cong-biet-dong-tac-chien-trong-thanh-pho-717526"],["SGGP – Cà phê biệt động Sài Gòn giữa lòng đô thị","https://www.sggp.org.vn/ca-phe-biet-dong-sai-gon-giua-long-do-thi-post491199.html"]]
+},
+{
+  id:"dia-dao-phu-tho-hoa", star:0, starText:"", name:"Địa đạo Phú Thọ Hòa", sub:"Hệ thống địa đạo phía tây Sài Gòn",
+  year:1947, yearLabel:"1947", period:"Kháng chiến chống Pháp", area:"Phía Tây", type:"Địa đạo",
+  rank:"Di tích lịch sử – văn hóa quốc gia (1996)",
+  addr:"39 đường Phú Thọ Hòa, phường Phú Thọ Hòa (Tân Phú cũ)", hours:"8:00–17:00, thứ Hai đến thứ Sáu. Nên gọi xác nhận trước khi đến.",
+  lat:10.7852, lng:106.6331,
+  summary:"Một trong những hệ thống địa đạo hình thành sớm ở phía tây Sài Gòn, được đào từ năm 1947 và sử dụng qua cả hai cuộc kháng chiến.",
+  story:"Ông Nguyễn Văn Lự là một trong 12 chiến sĩ cách mạng đào những đoạn địa đạo đầu tiên ở Phú Thọ Hòa. Theo lời kể của con trai ông, Nguyễn Hùng Minh, gia đình ông gắn bó trực tiếp với công trình này từ những ngày đầu, khi các hầm bí mật đơn lẻ dần được nối thành đường hầm nhiều ngách.",
+  context:["Địa đạo hình thành tại thôn Lộc Hòa và vùng phụ cận, thuộc khu vực Phú Thọ Hòa xưa. Địa hình cao, cây cối rậm rạp và sự che chở của nhân dân giúp nơi đây trở thành địa bàn hoạt động cách mạng quan trọng.",
+           "Từ nhu cầu bảo vệ lực lượng trước các cuộc càn quét của quân Pháp, người dân xây các hầm bí mật, rồi cải tiến thành hệ thống có nhiều ngách, lỗ thông hơi và cửa hầm ngụy trang."],
+  timeline:[["1947","Bắt đầu đào","Từ hầm bí mật đơn lẻ phát triển thành hệ thống địa đạo."],
+            ["29/3/1948","Kho bom Bảy Hiền","Một hoạt động quân sự tiêu biểu của lực lượng kháng chiến trong khu vực."],
+            ["1949–1954","Tiến công Tân Sơn Nhất","Nhiều hoạt động nhằm vào sân bay Tân Sơn Nhất và các kho bom."],
+            ["31/5–1/6/1954","Đồn Phú Thọ Hòa","Tiến công các đồn Phú Thọ Hòa và Phạm Văn Tụng."],
+            ["1954–1975","Kháng chiến chống Mỹ","Địa đạo và mạng lưới cơ sở tiếp tục được sử dụng."],
+            ["28/6/1996","Di tích quốc gia","Công nhận theo Quyết định số 1460-QĐ/VH."]],
+  events:[
+    {when:"1947",title:"Hình thành căn cứ địa đạo",text:"Để bảo vệ lực lượng trước các cuộc càn quét, nhân dân Lộc Hòa và vùng lân cận xây hầm bí mật, rồi phát triển thành hệ thống địa đạo. Trong kháng chiến chống Pháp, địa đạo mở rộng thành mạng lưới liên xã, che giấu cán bộ, du kích, bộ đội và giữ đường liên lạc.",img:"Cửa hầm ngụy trang"},
+    {when:"29/3/1948",title:"Trận đánh kho bom Bảy Hiền",text:"Một trong những hoạt động quân sự tiêu biểu của lực lượng kháng chiến trong khu vực. Mạng lưới căn cứ quanh Phú Thọ Hòa góp phần duy trì lực lượng và hỗ trợ kháng chiến ở vùng ven Sài Gòn.",img:"Tư liệu trận kho bom Bảy Hiền"},
+    {when:"1949–1954",title:"Những đợt tiến công vùng ven",text:"Theo tư liệu lịch sử địa phương, lực lượng kháng chiến có nhiều hoạt động nhằm vào sân bay Tân Sơn Nhất và các kho bom. Đêm 31/5 rạng sáng 1/6/1954, lực lượng kháng chiến tiến công các đồn Phú Thọ Hòa và Phạm Văn Tụng.",img:""}],
+  extra:{title:"Bên dưới mặt đất",items:[["Hai tầng","Lòng hầm cao khoảng 1 m, rộng 0,6–0,8 m; nhiều ngách và lỗ thông hơi. Một số đoạn có vách ngăn như các toa xe lửa."],["Ngụy trang","Cửa hầm được che đậy theo địa hình bên trên, giúp giữ nơi trú ẩn và liên lạc an toàn."],["Quy mô","Toàn mạng lưới liên xã từng dài hơn 10 km; đoạn phục dựng để tham quan hiện nay ngắn hơn nhiều."]]},
+  quote:"Những đường hầm cao chừng một mét đã giữ một vùng kháng chiến bám trụ sát nách Sài Gòn.",
+  note:{title:"Kích thước lòng hầm",text:"Cao ≈ 1 m · rộng 0,6–0,8 m · 2 tầng. Nhiều ngách, lỗ thông hơi. Có đoạn ngăn vách như toa xe lửa. Toàn mạng lưới > 10 km."},
+  values:[["Quân sự","Cho thấy cách tổ chức căn cứ, bảo vệ cán bộ và duy trì lực lượng ở vùng ven đô thị."],["Cộng đồng","Ghi nhận công sức của nhân dân địa phương trong việc đào hầm, bảo vệ và hỗ trợ lực lượng cách mạng."],["Kiến trúc","Công trình địa đạo có cấu trúc đặc trưng, hình thành từ nhu cầu thực tế của chiến tranh."],["Giáo dục","Giúp học sinh hiểu về lịch sử kháng chiến ở TP.HCM, tinh thần sáng tạo và tình quân dân."]],
+  legacy:["Sau khi được công nhận là di tích cấp quốc gia năm 1996, khu di tích được tu bổ, phục dựng cảnh quan và xây không gian trưng bày. Ngày nay nơi đây phục vụ tham quan, tìm hiểu lịch sử địa phương và giáo dục truyền thống cho thế hệ trẻ."],
+  people:[["Nguyễn Văn Lự","Một trong 12 chiến sĩ đào địa đạo đầu tiên","Theo lời kể của con trai ông, Nguyễn Hùng Minh, gia đình ông gắn bó trực tiếp với việc xây dựng công trình.",""],
+          ["Chi đội 12","Đơn vị vũ trang","Một trong những lực lượng được tư liệu nhắc đến là từng được địa đạo che giấu, hỗ trợ.",""],
+          ["Tiểu đoàn Ký Con","Đơn vị vũ trang","Phản ánh sự liên kết giữa căn cứ địa phương với các lực lượng kháng chiến vùng ven Sài Gòn.",""],
+          ["Tiểu đoàn Ngô Gia Tự và Chi đội 13","Đơn vị vũ trang","Được tư liệu địa phương nhắc đến trong mối liên hệ với địa đạo, góp phần duy trì phong trào khi bị Pháp càn quét.",""]],
+  quiz:[["Địa đạo Phú Thọ Hòa bắt đầu được xây từ năm nào?",["1940","1947","1960"],1,"Địa đạo được xây dựng từ năm 1947."],
+        ["Hệ thống địa đạo có mấy tầng?",["Hai tầng","Một tầng","Ba tầng"],0,"Tư liệu giới thiệu địa đạo có hai tầng."],
+        ["Địa đạo được công nhận di tích cấp quốc gia năm nào?",["2002","2012","1996"],2,"Ngày 28/6/1996, theo Quyết định số 1460-QĐ/VH."]],
+  sources:[["Báo Tuổi Trẻ – Lãnh đạo TP.HCM khảo sát địa đạo Phú Thọ Hòa","https://tuoitre.vn/lanh-dao-tp-hcm-khao-sat-dia-dao-phu-tho-hoa-20220804102422348.htm"],
+           ["Báo Sài Gòn Giải Phóng – Địa đạo Phú Thọ Hòa là sáng tạo độc đáo của thế hệ tiền nhân","https://www.sggp.org.vn/dia-dao-phu-tho-hoa-la-sang-tao-doc-dao-cua-the-he-tien-nhan-post646348.html"],
+           ["Cổng thông tin Đảng bộ TP.HCM – Phát huy giá trị Di tích lịch sử Địa đạo Phú Thọ Hòa","https://www.hcmcpv.org.vn/tin-tuc/phat-huy-gia-tri-di-tich-lich-su-dia-dao-phu-tho-hoa-gop-phan-thuc-hien-tot-cong-tac-tuyen-truyen-gi-1491905866"],
+           ["Công báo TP.HCM – Tu bổ, phục dựng cảnh quan di tích địa đạo Phú Thọ Hòa","https://congbao.hochiminhcity.gov.vn/tin-tuc-tong-hop/tu-bo-phuc-dung-canh-quan-di-tich-%C4%91ia-%C4%91ao-phu-tho-hoa"]],
+  imgSources:[]
+}];
+SITES.sort((a,b)=>a.year-b.year);
+const byId = Object.fromEntries(SITES.map(s=>[s.id,s]));
+
+/* ---------- tiện ích ---------- */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fold = s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/gi,"d").toLowerCase();
+function ph(key, caption, cls=""){
+  const e = IMG[key];
+  if(!e) return `<div class="ph ${cls}"><span class="t">${esc(caption)}</span></div>`;
+  return `<div class="ph has ${cls}"><img src="${esc(e[0])}" alt="${esc(e[1]||caption)}" loading="lazy" style="object-position:${e[2]||"center"}"></div>`;
+}
+const cap = key => IMG[key] ? IMG[key][1] : "";
+const mapsLink = s=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(s.name+" "+s.addr);
+
+/* ---------- Trang chủ ---------- */
+function home(){
+  return `
+  <section class="hero" aria-label="Sài Thành Địa Đồ">
+    <h1 class="sr">Sài Thành Địa Đồ – Dấu chân đỏ thuở cách mạng</h1>
+    <img class="art" src="hero.jpg" alt="Ảnh tư liệu Sài Gòn xưa, chữ Sài Thành Địa Đồ và bản đồ thành phố có ghim đỏ" width="1921" height="946">
+    <a class="btn cta a" href="#ban-do">Mở bản đồ</a>
+    <a class="btn cta b" href="#${SITES[0].id}">Bắt đầu hành trình</a>
+  </section>
+  <div class="hero-mobile"><div class="wrap" style="display:flex;gap:12px;width:100%"><a class="btn" href="#ban-do">Mở bản đồ</a><a class="btn" href="#${SITES[0].id}">Bắt đầu hành trình</a></div></div>
+
+  <section class="block"><div class="wrap intro-grid">
+    <div>
+      <p class="label">Giới thiệu nhanh</p>
+      <h2 class="title-script">Đi tìm dấu chân đỏ giữa lòng thành phố</h2>
+      <p>Sài Thành Địa Đồ dẫn bạn qua những địa điểm cách mạng ở TP. Hồ Chí Minh: một tòa dinh thự, một ngã ba vườn trầu, một quán cơm tấm và một hệ thống địa đạo. Mỗi nơi là một chặng trên hành trình từ thời Pháp thuộc đến ngày thống nhất.</p>
+      <p style="margin-top:24px"><a class="btn" href="#gioi-thieu">Tìm hiểu thêm</a></p>
+    </div>
+    <div class="stats">
+      <div><b>${SITES.length}</b><span>Địa điểm</span></div>
+      <div><b>1</b><span>Thành phố</span></div>
+      <div><b>${SITES[0].year}</b><span>Mốc sớm nhất</span></div>
+    </div>
+  </div></section>
+
+  <section class="film"><div class="wrap">
+    <div class="head"><div><p class="label">Địa điểm nổi bật</p><h2 class="title-script" style="color:inherit">Cuộn phim lịch sử</h2></div><a class="btn ghost" style="color:#f2e3c6;box-shadow:inset 0 0 0 2px #f2e3c6" href="#dia-diem">Xem tất cả</a></div>
+    <div class="reel" tabindex="0" aria-label="Các địa điểm, sắp theo năm"><div class="reel-track">
+      ${SITES.map(s=>`<a class="frame" href="#${s.id}">${ph(s.id+"-cover",s.name)}<div class="cap"><div class="yr">${s.year}</div><div class="nm">${esc(s.name)}</div></div></a>`).join("")}
+    </div></div>
+  </div></section>
+
+  <section class="block"><div class="wrap mission">
+    <div><p class="label">Sứ mệnh</p><h2 class="title-script">Để những địa chỉ quen thuộc kể lại chuyện của mình</h2></div>
+    <div>
+      <p>Nhiều người đi ngang những nơi này mỗi ngày mà không biết chúng từng chứng kiến điều gì. Dự án muốn giúp học sinh nhận ra lịch sử ngay trên những con đường mình vẫn đi.</p>
+      <ul>
+        <li>Kể lịch sử bằng câu chuyện con người, kèm mốc thời gian rõ ràng.</li>
+        <li>Nối mỗi địa điểm với hiện tại: địa chỉ, giờ mở cửa, đường đi.</li>
+        <li>Ghi nguồn đầy đủ, viết lại bằng lời của nhóm, không sao chép nguyên văn.</li>
+      </ul>
+    </div>
+  </div></section>`;
+}
+
+/* ---------- Giới thiệu ---------- */
+function about(){
+  return `<div class="wrap">
+  <div class="page-head"><p class="label">Giới thiệu</p><h1 class="title-script">Bốn chặng của một hành trình</h1>
+  <p>Các địa điểm được xếp theo năm hình thành. Bấm vào từng nơi để đọc câu chuyện đầy đủ.</p></div>
+  <div class="about-list">
+  ${SITES.map(s=>`<a class="about-item" href="#${s.id}">
+     <div class="yr">${s.year}</div>
+     <div><span class="chip">${esc(s.period)}</span><h3 style="margin-top:8px">${esc(s.name)}</h3><p>${esc(s.summary)}</p><span class="more">Đọc tiếp →</span></div>
+     ${ph(s.id+"-cover",s.name)}
+   </a>`).join("")}
+  </div>
+  <section class="block" style="padding-bottom:72px"><p class="label">Về dự án</p>
+   <p style="max-width:62ch;margin-top:8px">Sài Thành Địa Đồ là sản phẩm môn Lịch sử của nhóm học sinh lớp 11A2, Trường THPT Lê Quý Đôn, thuộc dự án “Khắc dấu rạng đông”. Nội dung được tổng hợp từ báo chí chính thống, tạp chí khoa học và cổng thông tin của thành phố; danh sách nguồn có ở trang <a href="#nguon">Nguồn tham khảo</a>.</p></section>
+  </div>`;
+}
+
+/* ---------- Danh sách địa điểm ---------- */
+const state = {q:"",period:"",area:"",type:"",view:"grid",page:1};
+try{ const v=localStorage.getItem("stdd-view"); if(v) state.view=v; }catch(e){}
+const PER_PAGE = 6;
+function uniq(k){return [...new Set(SITES.map(s=>s[k]))]}
+function places(){
+  const opt=(k,label)=>`<select id="f-${k}" aria-label="${label}"><option value="">${label}: tất cả</option>${uniq(k).map(v=>`<option${state[k]===v?" selected":""}>${esc(v)}</option>`).join("")}</select>`;
+  return `<div class="wrap">
+   <div class="page-head" style="border:0;padding-bottom:0"><p class="label">Địa điểm lịch sử</p><h1 class="title-script">Tìm một địa chỉ đỏ</h1></div>
+   <div class="tools">
+     <label class="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+       <input id="q" type="search" placeholder="Tìm theo tên, nhân vật, sự kiện…" value="${esc(state.q)}" aria-label="Tìm kiếm"></label>
+     <div class="filters">
+       ${opt("period","Thời kỳ")}${opt("area","Khu vực")}${opt("type","Loại di tích")}
+       <a class="btn ghost" href="#ban-do" style="font-size:15px;padding:6px 14px">Xem bản đồ</a>
+       <div class="view-toggle" role="group" aria-label="Kiểu hiển thị">
+         <button id="v-grid" aria-pressed="${state.view==="grid"}">Lưới</button><button id="v-list" aria-pressed="${state.view==="list"}">Danh sách</button></div>
+     </div>
+     <p class="count" id="count"></p>
+   </div>
+   <div id="cards"></div>
+   <div class="pager" id="pager"></div>
+  </div>`;
+}
+function filtered(){
+  const q=fold(state.q.trim());
+  return SITES.filter(s=>(!state.period||s.period===state.period)&&(!state.area||s.area===state.area)&&(!state.type||s.type===state.type)
+    &&(!q||fold([s.name,s.sub,s.summary,s.addr,...s.people.map(p=>p[0]),...s.events.map(e=>e.title)].join(" ")).includes(q)));
+}
+function drawCards(){
+  const list=filtered(), pages=Math.max(1,Math.ceil(list.length/PER_PAGE));
+  state.page=Math.min(state.page,pages);
+  const shown=list.slice((state.page-1)*PER_PAGE,state.page*PER_PAGE);
+  $("#count").textContent=`${list.length} địa điểm`;
+  $("#cards").innerHTML = list.length ? `<div class="cards ${state.view==="list"?"list":""}">${shown.map(s=>`
+    <article class="card">${ph(s.id+"-cover",s.name)}
+      <div class="body"><span class="chip">${esc(s.type)}</span><h3>${esc(s.name)}</h3>
+      <div class="meta"><span>${esc(s.addr.split(",").slice(-1)[0].trim())}</span><span>Năm ${esc(s.yearLabel)}</span></div>
+      ${state.view==="list"?`<p style="font-size:15px;color:var(--muted)">${esc(s.summary)}</p>`:""}
+      <a class="btn" href="#${s.id}">Xem chi tiết</a></div></article>`).join("")}</div>`
+    : `<p class="empty">Không có địa điểm nào khớp. Thử bỏ bớt bộ lọc hoặc gõ từ khóa khác.</p>`;
+  $("#pager").innerHTML = pages>1 ? Array.from({length:pages},(_,i)=>`<button data-p="${i+1}" aria-current="${state.page===i+1}">${i+1}</button>`).join("") : "";
+}
+function bindPlaces(){
+  $("#q").addEventListener("input",e=>{state.q=e.target.value;state.page=1;drawCards()});
+  ["period","area","type"].forEach(k=>$("#f-"+k).addEventListener("change",e=>{state[k]=e.target.value;state.page=1;drawCards()}));
+  ["grid","list"].forEach(v=>$("#v-"+v).addEventListener("click",()=>{state.view=v;try{localStorage.setItem("stdd-view",v)}catch(e){}
+    $("#v-grid").setAttribute("aria-pressed",v==="grid");$("#v-list").setAttribute("aria-pressed",v==="list");drawCards()}));
+  $("#pager").addEventListener("click",e=>{const p=e.target.dataset.p;if(p){state.page=+p;drawCards();scrollTo({top:0})}});
+  drawCards();
+}
+
+/* ---------- Bản đồ ---------- */
+function mapPage(){
+  const W=640,H=520,pad=70;
+  const lats=SITES.map(s=>s.lat),lngs=SITES.map(s=>s.lng);
+  const minLat=Math.min(...lats),maxLat=Math.max(...lats),minLng=Math.min(...lngs),maxLng=Math.max(...lngs);
+  const k=Math.min((W-2*pad)/(maxLng-minLng),(H-2*pad)/(maxLat-minLat));
+  const ox=(W-(maxLng-minLng)*k)/2, oy=(H-(maxLat-minLat)*k)/2;
+  const P=s=>[ox+(s.lng-minLng)*k, H-oy-(s.lat-minLat)*k];
+  const kmPx=k/111; // 1° ≈ 111 km
+  return `<div class="wrap">
+   <div class="page-head" style="border:0;padding-bottom:0"><p class="label">Bản đồ</p><h1 class="title-script">Các chặng trên bản đồ thành phố</h1>
+   <p>Vị trí tương đối theo tọa độ thật. Bấm vào một ghim để đọc về địa điểm, hoặc mở chỉ đường trên Google Maps.</p></div>
+   <div class="map-wrap">
+    <div class="map"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sơ đồ vị trí các địa điểm">
+      <defs><pattern id="g" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="var(--line)" stroke-width="1"/></pattern></defs>
+      <rect width="${W}" height="${H}" fill="url(#g)"/>
+      <polyline points="${SITES.map(s=>P(s).join(",")).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 7" opacity=".7"/>
+      ${SITES.map((s,i)=>{const [x,y]=P(s);const right=x<W*0.6;return `<a href="#${s.id}" aria-label="${esc(s.name)}">
+        <circle cx="${x}" cy="${y}" r="20" fill="var(--brand)"/><text x="${x}" y="${y+6}" text-anchor="middle" fill="#fff1d6" font-family="Oswald,Arial" font-size="17">${i+1}</text>
+        <text x="${right?x+28:x-28}" y="${y+5}" text-anchor="${right?"start":"end"}" fill="var(--fg)" font-family="Oswald,Arial" font-size="16">${esc(s.name.split(" – ")[0])}</text></a>`}).join("")}
+      <g transform="translate(${W-90},50)" fill="var(--muted)" font-family="Oswald,Arial" font-size="14"><path d="M0 -26 L8 0 L0 -6 L-8 0Z" fill="var(--accent)"/><text x="0" y="18" text-anchor="middle">B</text></g>
+      <g transform="translate(30,${H-30})" font-family="Oswald,Arial" font-size="13" fill="var(--muted)"><path d="M0 0H${(2*kmPx).toFixed(1)}" stroke="var(--fg)" stroke-width="3"/><text x="0" y="-8">2 km</text></g>
+    </svg></div>
+    <div class="map-list">
+     ${SITES.map((s,i)=>`<a href="#${s.id}"><span class="n">${i+1}</span><span><b>${esc(s.name)}</b><small>${esc(s.addr)} · ${s.year}</small></span></a>`).join("")}
+     <p style="font-size:14px;color:var(--muted)">Đường nét đứt nối các địa điểm theo thứ tự năm, đúng lộ trình “Bắt đầu hành trình”.</p>
+    </div>
+   </div></div>`;
+}
+
+/* ---------- Chi tiết ---------- */
+/* ---- Nhân vật: 1 tiêu biểu + tối đa 4 người khác (khung ảnh nhỏ) ---- */
+const SIL="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><circle cx="150" cy="140" r="64" fill="#fff1d6" opacity=".85"/><path d="M20 400Q30 250 150 235T280 400Z" fill="#fff1d6" opacity=".85"/></svg>');
+function vip(s){
+  const k=s.star??0,p=s.people[k]; if(!p) return "";
+  const cut=IMG[s.id+"-star"],alt=cut||IMG[s.id+"-p"+k],bg=IMG[s.id+"-starbg"];
+  const img=alt?`<img class="vip-img${cut?"":" framed"}" src="${esc(alt[0])}" alt="${esc(alt[1]||p[0])}" style="object-position:${alt[2]||"center top"}">`:`<img class="vip-img" src="${SIL}" alt="">`;
+  return `<div class="vip">${bg?`<div class="vip-bg" style="background-image:url('${esc(bg[0])}')"></div>`:""}<div class="vip-t"><p class="label">Nhân vật tiêu biểu</p><h3>${esc(p[0])}</h3><p class="role">${esc(p[1])}</p><p>${esc(s.starText||p[2])}</p>${p[3]?`<p class="warn">${esc(p[3])}</p>`:""}</div>${img}</div>`;
+}
+function peopleList(s){
+  const k=s.star??0;
+  return `<div class="people">${s.people.map((p,i)=>[p,i]).filter(([,i])=>i!==k).slice(0,4).map(([p,i])=>`<div class="person"><figure style="margin:0" title="${esc(cap(s.id+"-p"+i))}">${ph(s.id+"-p"+i,p[0])}</figure><div><h3>${esc(p[0])}</h3><p class="role">${esc(p[1])}</p><p>${esc(p[2])}</p>${p[3]?`<p class="warn">${esc(p[3])}</p>`:""}</div></div>`).join("")}</div>`;
+}
+function detail(s){
+  const i=SITES.indexOf(s), next=SITES[i+1], prev=SITES[i-1];
+  const near=SITES.filter(o=>o!==s).map(o=>({o,sc:(o.area===s.area?2:0)+(o.period===s.period?2:0)+(1/(1+Math.abs(o.year-s.year)))})).sort((a,b)=>b.sc-a.sc).slice(0,3);
+  const stops=[["mo-dau","Câu chuyện"],["boi-canh","Bối cảnh"],["dien-bien","Diễn biến"],["y-nghia","Ý nghĩa"],["anh-huong","Ảnh hưởng"],["nhan-vat","Nhân vật"],["hom-nay","Hôm nay"]];
+  let flip=0;
+  const ev=s.events.map((e,k)=>IMG[s.id+"-ev"+k]?`<div class="event ${flip++%2?"flip":""}"><div><div class="when">${esc(e.when)}</div><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></div><figure class="side" style="margin:0">${ph(s.id+"-ev"+k,e.title)}<figcaption class="c">${esc(cap(s.id+"-ev"+k))}</figcaption></figure></div>`
+     :`<div class="event text-only"><div><div class="when">${esc(e.when)}</div><h3>${esc(e.title)}</h3><p>${esc(e.text)}</p></div></div>`).join("");
+  return `
+  <div class="d-hero">${ph(s.id+"-cover","Ảnh ngang lớn: "+s.name)}
+    <div class="over"><div class="wrap"><p class="label">${esc(s.period)} · ${esc(s.type)}</p><h1>${esc(s.name)}</h1><p style="margin-top:6px;opacity:.85">${esc(s.sub)}</p></div></div></div>
+  <div class="strip"><div class="wrap"><dl>
+    <div><dt>Vị trí</dt><dd>${esc(s.addr)}</dd></div><div><dt>Năm</dt><dd>${esc(s.yearLabel)}</dd></div>
+    <div><dt>Loại</dt><dd>${esc(s.type)}</dd></div><div><dt>Xếp hạng</dt><dd>${esc(s.rank)}</dd></div></dl></div></div>
+  <div class="wrap detail">
+    <nav class="route" aria-label="Các phần của bài"><ol>${stops.map(([id,t])=>`<li data-s="${id}"><button data-go="${id}"><span class="dot"></span>${t}</button></li>`).join("")}</ol></nav>
+    <article class="story">
+      <section id="mo-dau"><p class="label">Câu chuyện mở đầu</p><p class="lede" style="margin-top:12px">${esc(s.story)}</p></section>
+      <section id="boi-canh"><p class="label">Bối cảnh</p><h2>${esc(s.name.split(" – ")[0])} trước khi đi vào lịch sử</h2>
+        ${s.context.map(p=>`<p>${esc(p)}</p>`).join("")}
+        ${IMG[s.id+"-wide"]?`<figure class="bleed">${ph(s.id+"-wide",s.name)}<figcaption>${esc(cap(s.id+"-wide"))}</figcaption></figure>`:""}
+        <ol class="timeline">${s.timeline.map(t=>`<li><span class="when">${esc(t[0])}</span><span><b>${esc(t[1])}</b>${esc(t[2])}</span></li>`).join("")}</ol>
+      </section>
+      <section id="dien-bien"><p class="label">Diễn biến</p><h2>Những sự kiện gắn với địa điểm</h2>${ev}
+        <div class="paper"><h4>${esc(s.note.title)}</h4>${esc(s.note.text)}</div>
+        ${s.extra?`<h3 style="font-size:22px;margin:32px 0 12px">${esc(s.extra.title)}</h3>${IMG[s.id+"-g0"]?`<div class="gallery">${[0,1,2].filter(g=>IMG[s.id+"-g"+g]).map(g=>`<figure>${ph(s.id+"-g"+g,"")}<figcaption class="c">${esc(cap(s.id+"-g"+g))}</figcaption></figure>`).join("")}</div>`:""}<div class="values">${s.extra.items.map(v=>`<div><b>${esc(v[0])}</b>${esc(v[1])}</div>`).join("")}</div>`:""}
+      </section>
+      <p class="pull">${esc(s.quote)}</p>
+      <section id="y-nghia"><p class="label">Ý nghĩa</p><h2>Giá trị của địa điểm</h2><div class="values">${s.values.map(v=>`<div><b>${esc(v[0])}</b>${esc(v[1])}</div>`).join("")}</div></section>
+      <section id="anh-huong"><p class="label">Ảnh hưởng</p><h2>Từ di tích đến lớp học</h2>${s.legacy.map(p=>`<p>${esc(p)}</p>`).join("")}</section>
+      <section id="nhan-vat"><p class="label">Nhân vật liên quan</p><h2>Những con người ở đây</h2>${vip(s)}${peopleList(s)}</section>
+      <section id="hom-nay"><p class="label">Hôm nay</p><h2>Hôm nay nơi này thế nào?</h2>
+        <div class="today"${IMG[s.id+"-now"]?"":' style="grid-template-columns:1fr"'}>${IMG[s.id+"-now"]?`<figure style="margin:0;display:grid">${ph(s.id+"-now",s.name)}<figcaption class="c">${esc(cap(s.id+"-now"))}</figcaption></figure>`:""}
+          <dl><div><dt>Địa chỉ</dt><dd>${esc(s.addr)}</dd></div><div><dt>Giờ mở cửa</dt><dd>${esc(s.hours)}</dd></div>
+          <div><dt>Đường đi</dt><dd><a class="btn" style="font-size:15px;padding:7px 16px;margin-top:4px" href="${mapsLink(s)}" target="_blank" rel="noopener">Chỉ đường trên Google Maps ↗</a></dd></div></dl></div>
+        <h3 style="font-size:22px;margin:44px 0 6px">Thử kiến thức</h3><p class="score" id="score">Trả lời 3 câu hỏi nhanh.</p>
+        <div class="quiz" style="margin-top:12px">${s.quiz.map((q,k)=>`<div class="q" data-k="${k}"><p>${k+1}. ${esc(q[0])}</p><div class="opts">${q[1].map((o,j)=>`<button data-j="${j}">${esc(o)}</button>`).join("")}</div><p class="why" hidden></p></div>`).join("")}</div>
+        <h3 style="font-size:22px;margin:48px 0 16px">Gợi ý địa điểm gần về thời kỳ hoặc khu vực</h3>
+        <div class="next-grid">${near.map(({o})=>`<a href="#${o.id}">${ph(o.id+"-cover",o.name)}<b>${esc(o.name)}</b><small>${o.year} · ${esc(o.area)} · ${esc(o.period)}</small></a>`).join("")}</div>
+        <div class="journey" style="margin-top:48px">
+          ${prev?`<a class="btn ghost" href="#${prev.id}">← ${esc(prev.name.split(" – ")[0])}</a>`:`<span></span>`}
+          ${next?`<a class="btn" href="#${next.id}">Chặng tiếp: ${esc(next.name.split(" – ")[0])} →</a>`:`<a class="btn" href="#ban-do">Xem lại cả hành trình →</a>`}
+        </div>
+      </section>
+    </article>
+  </div>`;
+}
+let io;
+function bindDetail(s){
+  const mark=document.getElementById("y-nghia");
+  const LATE={light:["#ecd3be","#f3e2d1","#d8b99f"],dark:["#281613","#331c18","#52332b"]};
+  const hex=h=>[1,3,5].map(i=>parseInt(h.trim().slice(i,i+2),16));
+  const mix=(a,b,t)=>"rgb("+hex(a).map((v,i)=>Math.round(v+(hex(b)[i]-v)*t)).join(",")+")";
+  const tint=()=>{const r=mark.getBoundingClientRect(),H=innerHeight;
+    let t=Math.min(1,Math.max(0,(H*.8-r.top)/(H*.45)));t=t*t*(3-2*t);
+    const cs=getComputedStyle(document.documentElement);
+    ["--bg","--surface","--line"].forEach((v,i)=>document.body.style.setProperty(v,t?mix(cs.getPropertyValue(v),LATE[curTheme()][i],t):""))};
+  const mo=new MutationObserver(tint);mo.observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+  addEventListener("scroll",tint,{passive:true});tint();
+  stopTint=()=>{removeEventListener("scroll",tint);mo.disconnect();["--bg","--surface","--line"].forEach(v=>document.body.style.removeProperty(v))};
+  document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>document.getElementById(b.dataset.go).scrollIntoView({behavior:"smooth"})));
+  const items=[...document.querySelectorAll(".route li")];
+  io&&io.disconnect();
+  io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;let past=true;
+    items.forEach(li=>{const on=li.dataset.s===id;li.classList.toggle("on",on);if(on)past=false;li.classList.toggle("done",past&&!on)});
+    const cur=items.find(li=>li.classList.contains("on"));cur&&cur.scrollIntoView&&window.innerWidth<900&&cur.parentElement.parentElement.scrollTo({left:cur.offsetLeft-16,behavior:"smooth"});}})},{rootMargin:"-30% 0px -60% 0px"});
+  document.querySelectorAll(".story section").forEach(sec=>io.observe(sec));
+  items[0].classList.add("on");
+  let right=0,done=0;
+  document.querySelectorAll(".q").forEach(qe=>{const q=s.quiz[+qe.dataset.k];
+    qe.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const j=+b.dataset.j;
+      qe.querySelectorAll("button").forEach(x=>{x.disabled=true;if(+x.dataset.j===q[2])x.classList.add("right")});
+      if(j!==q[2])b.classList.add("wrong");else right++;done++;
+      const w=qe.querySelector(".why");w.textContent=(j===q[2]?"Chính xác. ":"Chưa đúng. ")+q[3];w.hidden=false;
+      $("#score").textContent=done<s.quiz.length?`Đã trả lời ${done}/${s.quiz.length} câu.`:`Bạn đúng ${right}/${s.quiz.length} câu.`;}))});
+}
+
+/* ---------- Nguồn ---------- */
+function sources(){
+  return `<div class="wrap" style="padding-bottom:72px">
+  <div class="page-head"><p class="label">Nguồn tham khảo</p><h1 class="title-script">Tra cứu nguồn theo từng địa điểm</h1>
+  <p class="pledge">Nhóm cam kết viết lại nội dung bằng lời của mình. Không sử dụng nguyên văn và không sao chép toàn bộ bài báo hay công trình nghiên cứu. Mọi thông tin đều ghi rõ nơi tham khảo bên dưới.</p></div>
+  ${SITES.map(s=>`<div class="src-group"><h2><a href="#${s.id}" style="color:inherit;text-decoration:none">${esc(s.name)}</a></h2>
+    <ol>${s.sources.map(r=>`<li><a href="${esc(r[1])}" target="_blank" rel="noopener">${esc(r[0])}</a></li>`).join("")}</ol>
+    ${s.imgSources.length?`<p class="sub">Nguồn hình ảnh</p><ol>${s.imgSources.map(r=>`<li><a href="${esc(r[1])}" target="_blank" rel="noopener">${esc(r[0])}</a></li>`).join("")}</ol>`:""}
+  </div>`).join("")}</div>`;
+}
+
+/* ---------- Điều hướng ---------- */
+let stopTint=()=>{};
+function route(){
+  stopTint();stopTint=()=>{};
+  const r=(location.hash||"#trang-chu").slice(1);
+  const app=$("#app"); let navKey=r;
+  if(byId[r]){app.innerHTML=detail(byId[r]);bindDetail(byId[r]);navKey="dia-diem";document.title=byId[r].name+" · Sài Thành Địa Đồ";}
+  else if(r==="gioi-thieu"){app.innerHTML=about();document.title="Giới thiệu · Sài Thành Địa Đồ";}
+  else if(r==="dia-diem"){app.innerHTML=places();bindPlaces();document.title="Địa điểm · Sài Thành Địa Đồ";}
+  else if(r==="ban-do"){app.innerHTML=mapPage();navKey="dia-diem";document.title="Bản đồ · Sài Thành Địa Đồ";}
+  else if(r==="nguon"){app.innerHTML=sources();document.title="Nguồn tham khảo · Sài Thành Địa Đồ";}
+  else {app.innerHTML=home();navKey="trang-chu";document.title="Sài Thành Địa Đồ";}
+  document.querySelectorAll(".links a").forEach(a=>{if(a.dataset.r===navKey)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  window.scrollTo({top:0,behavior:"instant"});
+}
+addEventListener("hashchange",route);
+
+/* ---------- Sáng / tối ---------- */
+const mq=matchMedia("(prefers-color-scheme: dark)");
+function curTheme(){return document.documentElement.dataset.theme||(mq.matches?"dark":"light")}
+function paintToggle(){const t=curTheme();$("#t-light").setAttribute("aria-pressed",t==="light");$("#t-dark").setAttribute("aria-pressed",t==="dark")}
+function setTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem("stdd-theme",t)}catch(e){}paintToggle()}
+try{const t=localStorage.getItem("stdd-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
+$("#t-light").addEventListener("click",()=>setTheme("light"));
+$("#t-dark").addEventListener("click",()=>setTheme("dark"));
+mq.addEventListener&&mq.addEventListener("change",paintToggle);
+paintToggle(); route();
+</script>
+
+</body>
+</html>
